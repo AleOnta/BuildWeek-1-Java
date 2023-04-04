@@ -3,9 +3,10 @@ package model;
 import java.time.LocalDate;
 import javax.persistence.*;
 
+@Entity
 public class Abbonamento extends Titolo_di_Viaggio {
 	
-	@ManyToOne
+	//@ManyToOne
 	@Column(name = "id_tessera")
 	private Long tesseraId;
 	@Enumerated(EnumType.STRING)
