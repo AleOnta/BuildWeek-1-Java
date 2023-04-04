@@ -3,14 +3,11 @@ package model;
 import java.time.LocalDate;
 import javax.persistence.*;
 
-@Entity
-@Table(name = "abbonamenti")
-public class Abbonamento {
+public class Abbonamento extends Titolo_di_Viaggio {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_abbonamento")
-	private Long numeroAbbonamento;
+	@ManyToOne
+	@Column(name = "id_tessera")
+	private Long tesseraId;
 	@Enumerated(EnumType.STRING)
 	private E_Abbonamento tipologia;
 	private LocalDate scadenza;
@@ -30,7 +27,15 @@ public class Abbonamento {
 			return LocalDate.now().plusMonths(1);
 		}
 	}
-	
+
+	public Long getTesseraId() {
+		return tesseraId;
+	}
+
+	public void setTesseraId(Long tesseraId) {
+		this.tesseraId = tesseraId;
+	}
+
 	public E_Abbonamento getTipologia() {
 		return tipologia;
 	}
@@ -47,15 +52,42 @@ public class Abbonamento {
 		this.scadenza = scadenza;
 	}
 
-	public Long getNumeroAbbonamento() {
-		return numeroAbbonamento;
+	@Override
+	public VenditaBiglietto getEmittente() {
+		// TODO Auto-generated method stub
+		return super.getEmittente();
+	}
+
+	@Override
+	public void setEmittente(VenditaBiglietto emittente) {
+		// TODO Auto-generated method stub
+		super.setEmittente(emittente);
+	}
+
+	@Override
+	public LocalDate getDataEmissione() {
+		// TODO Auto-generated method stub
+		return super.getDataEmissione();
+	}
+
+	@Override
+	public void setDataEmissione(LocalDate dataEmissione) {
+		// TODO Auto-generated method stub
+		super.setDataEmissione(dataEmissione);
+	}
+
+	@Override
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return super.getId();
 	}
 
 	@Override
 	public String toString() {
-		return "Abbonamento [numeroAbbonamento=" + numeroAbbonamento + ", tipologia=" + tipologia + ", scadenza="
-				+ scadenza + "]";
+		return "Abbonamento [" + super.toString() + ", tesseraId=" + tesseraId + ", tipologia=" + tipologia + ", scadenza=" + scadenza
+				+"]";
 	}
+	
 	
 	
 	

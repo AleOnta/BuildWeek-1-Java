@@ -4,17 +4,10 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
-public class Biglietto {
+public class Biglietto extends Titolo_di_Viaggio {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "biglietto_id")
-	private Long bigliettoId;
 	@ManyToOne
 	private Utente utente;
-	private LocalDate dataEmissione;
-	// ho messo string perchè non sapevo come volessi gestire le classi di vendita
-	private String enteEmittente;
 	@Column(nullable = true)
 	private LocalDate utilizzo;
 	private boolean valido;
@@ -23,46 +16,71 @@ public class Biglietto {
 		super();
 	}
 	
-	public Biglietto(Utente utente, LocalDate dataEmissione, String enteEmittente) {
-		super();
+	public Biglietto(VenditaBiglietto emittente, LocalDate dataEmissione, Utente utente) {
+		super(emittente, dataEmissione);
 		this.utente = utente;
-		this.dataEmissione = dataEmissione;
-		this.enteEmittente = enteEmittente;
 	}
-	
+
 	public Utente getUtente() {
 		return utente;
 	}
-	
+
 	public void setUtente(Utente utente) {
 		this.utente = utente;
 	}
-	
-	public LocalDate getDataEmissione() {
-		return dataEmissione;
-	}
-	
-	public void setDataEmissione(LocalDate dataEmissione) {
-		this.dataEmissione = dataEmissione;
-	}
-	
-	public String getEnteEmittente() {
-		return enteEmittente;
-	}
-	
-	public void setEnteEmittente(String enteEmittente) {
-		this.enteEmittente = enteEmittente;
-	}
-	
+
 	public LocalDate getUtilizzo() {
 		return utilizzo;
 	}
-	
+
 	public void setUtilizzo(LocalDate utilizzo) {
 		this.utilizzo = utilizzo;
 	}
-	
-	public Long getBigliettoId() {
-		return bigliettoId;
+
+	public boolean isValido() {
+		return valido;
 	}
+
+	public void setValido(boolean valido) {
+		this.valido = valido;
+	}
+
+	@Override
+	public VenditaBiglietto getEmittente() {
+		// TODO Auto-generated method stub
+		return super.getEmittente();
+	}
+
+	@Override
+	public void setEmittente(VenditaBiglietto emittente) {
+		// TODO Auto-generated method stub
+		super.setEmittente(emittente);
+	}
+
+	@Override
+	public LocalDate getDataEmissione() {
+		// TODO Auto-generated method stub
+		return super.getDataEmissione();
+	}
+
+	@Override
+	public void setDataEmissione(LocalDate dataEmissione) {
+		// TODO Auto-generated method stub
+		super.setDataEmissione(dataEmissione);
+	}
+
+	@Override
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return super.getId();
+	}
+
+	@Override
+	public String toString() {
+		return "Biglietto [" + super.toString() + ", utente=" + utente + ", utilizzo=" + utilizzo + ", valido=" + valido + "]";
+	}
+
+	
+	
+	
 }
