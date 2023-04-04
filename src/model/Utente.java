@@ -1,39 +1,49 @@
 package model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "utenti")
+@Entity
+@Table(name = "utenti")
 public class Utente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "id_user")
+	private Long id_user;
 	@Column(nullable = false)
 	private String nome;
 	@Column(nullable = false)
 	private String cognome;
-	@OneToMany
-	@Column(name = "id_tessera", nullable = true)
-	private Tessera tesseraUtente;
+	@OneToMany(mappedBy = "utente_proprietario")
+	private Set<Tessera> tessera_utente;
 	@OneToMany
 	private List<Biglietto> biglietti;
 	
+	
 	public Utente() {
-		
 	}
-
-	public Utente(String nome, String cognome, Tessera tesseraUtente) {
+	
+	public Utente(String nome, String cognome) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.tesseraUtente = tesseraUtente;
+		//this.tesseraUtente.setUtenteProprietario(this);
+	};
+
+	
+	public Utente(String nome, String cognome, Tessera tesseraUtente) { 
+		super();
+		this.nome = nome; 
+		this.cognome = cognome; 
+		
 	}
+	 
 
 	public Long getId() {
-		return id;
+		return id_user;
 	}
 	
 	public String getNome() {
@@ -52,12 +62,12 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public Tessera getTesseraUtente() {
-		return tesseraUtente;
+	public Set<Tessera> getTessereUtente() {
+		return tessera_utente;
 	}
 
-	public void setTesseraUtente(Tessera tesseraUtente) {
-		this.tesseraUtente = tesseraUtente;
+	public void setTesseraUtente(Set<Tessera> tesseraUtente) {
+		this.tessera_utente = tesseraUtente;
 	}
 
 	public List<Biglietto> getBiglietti() {
@@ -70,7 +80,7 @@ public class Utente {
 
 	@Override
 	public String toString() {
-		return "UTENTE --> id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tesseraUtente
+		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tessera_utente
 				+ ", biglietti=" + biglietti + "]";
 	}
 	

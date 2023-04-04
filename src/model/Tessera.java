@@ -4,35 +4,38 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "tessere")
+@Entity
+@Table(name = "tessere")
 public class Tessera {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long numeroTessera;
+	private Long numero_tessera;
+	private LocalDate iscrizione;
 	private LocalDate scadenza;
-	@OneToOne
-	@Column(name = "id_user")
-	private Utente utenteProprietario;
-	
+	@ManyToOne
+	@JoinColumn(name = "id_utente")
+	private Utente utente_proprietario;
 	
 	public Tessera() {
 		super();
+		this.iscrizione = LocalDate.now();
+		this.scadenza=LocalDate.now().plusYears(1);
 	}
 
-	public Tessera(Utente utenteProprietario, LocalDate scadenza) {
+	public Tessera(Utente utenteProprietario) {
 		super();
-		this.utenteProprietario = utenteProprietario;
-		this.scadenza = LocalDate.now().plusYears(1);
+		this.utente_proprietario = utenteProprietario;
+		this.iscrizione = LocalDate.now();
+		this.scadenza=LocalDate.now().plusYears(1);
 	}
 
 	public Utente getUtenteProprietario() {
-		return utenteProprietario;
+		return utente_proprietario;
 	}
 
 	public void setUtenteProprietario(Utente utenteProprietario) {
-		this.utenteProprietario = utenteProprietario;
+		this.utente_proprietario = utenteProprietario;
 	}
 
 	public LocalDate getScadenza() {
@@ -44,12 +47,12 @@ public class Tessera {
 	}
 
 	public Long getNumeroTessera() {
-		return numeroTessera;
+		return numero_tessera;
 	}
 
 	@Override
 	public String toString() {
-		return "TESSERA --> numero-tessera=" + numeroTessera + ", utente-proprietario=" + utenteProprietario + ", scadenza="
+		return "TESSERA --> numero-tessera=" + numero_tessera + ", utente-proprietario=" + utente_proprietario + ", scadenza="
 				+ scadenza;
 	}
 	
