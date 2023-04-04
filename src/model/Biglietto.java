@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Biglietto extends Titolo_di_Viaggio {
 
-	//@ManyToOne
+	@ManyToOne
 	private Utente utente;
 	@Column(nullable = true)
 	private LocalDate utilizzo;

@@ -18,7 +18,7 @@ public class Utente {
 	private String cognome;
 	@OneToMany(mappedBy = "utente_proprietario")
 	private Set<Tessera> tessera_utente;
-	@OneToMany
+	@OneToMany(mappedBy="utente")
 	private List<Biglietto> biglietti;
 	
 	

@@ -17,7 +17,15 @@ public class VenditaBiglietto implements Serializable{
 @Id
 @GeneratedValue (strategy=GenerationType.IDENTITY)
 private Long id_rivenditore;
+private String luogo;
 
+
+public String getLuogo() {
+	return luogo;
+}
+public void setLuogo(String luogo) {
+	this.luogo = luogo;
+}
 public Long getId_rivenditore() {
 	return id_rivenditore;
 }
