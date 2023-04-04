@@ -2,7 +2,6 @@ package model;
 
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.*;
 
 @Entity
@@ -30,17 +29,7 @@ public class Utente {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
-		//this.tesseraUtente.setUtenteProprietario(this);
 	};
-
-	
-	public Utente(String nome, String cognome, Tessera tesseraUtente) { 
-		super();
-		this.nome = nome; 
-		this.cognome = cognome; 
-		
-	}
-	 
 
 	public Long getId() {
 		return id_user;
