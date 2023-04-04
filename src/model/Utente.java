@@ -4,36 +4,40 @@ import java.util.List;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "utenti")
+@Entity
+@Table(name = "utenti")
 public class Utente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id_user;
 	@Column(nullable = false)
 	private String nome;
 	@Column(nullable = false)
 	private String cognome;
-	@OneToMany
-	@Column(name = "id_tessera", nullable = true)
+	@OneToOne
 	private Tessera tesseraUtente;
 	@OneToMany
 	private List<Biglietto> biglietti;
 	
+	
 	public Utente() {
-		
 	}
-
-	public Utente(String nome, String cognome, Tessera tesseraUtente) {
+	
+	public Utente(String nome, String cognome) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.tesseraUtente = tesseraUtente;
-	}
+	};
+
+	
+	  public Utente(String nome, String cognome, Tessera tesseraUtente) { super();
+	  this.nome = nome; this.cognome = cognome; this.tesseraUtente.setUtenteProprietario(this);;
+	  }
+	 
 
 	public Long getId() {
-		return id;
+		return id_user;
 	}
 	
 	public String getNome() {
@@ -70,7 +74,7 @@ public class Utente {
 
 	@Override
 	public String toString() {
-		return "UTENTE --> id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tesseraUtente
+		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tesseraUtente
 				+ ", biglietti=" + biglietti + "]";
 	}
 	

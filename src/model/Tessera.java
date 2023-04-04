@@ -4,16 +4,16 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "tessere")
+@Entity
+@Table(name = "tessere")
 public class Tessera {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long numeroTessera;
+	private LocalDate iscrizione;
 	private LocalDate scadenza;
-	@OneToOne
-	@Column(name = "id_user")
+	@OneToOne(mappedBy="tesseraUtente")
 	private Utente utenteProprietario;
 	
 	
@@ -21,10 +21,11 @@ public class Tessera {
 		super();
 	}
 
-	public Tessera(Utente utenteProprietario, LocalDate scadenza) {
+	public Tessera(Utente utenteProprietario) {
 		super();
 		this.utenteProprietario = utenteProprietario;
-		this.scadenza = LocalDate.now().plusYears(1);
+		this.iscrizione = LocalDate.now();
+		this.scadenza=LocalDate.now().plusYears(1);
 	}
 
 	public Utente getUtenteProprietario() {

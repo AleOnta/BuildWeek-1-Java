@@ -6,18 +6,18 @@ import javax.persistence.Entity;
 
 @Entity
 public class RivenditoreFisico extends VenditaBiglietto{
-private LocalDate orarioApertura;
-private LocalDate orarioChiusura;
-public LocalDate getOrarioApertura() {
+private double orarioApertura;
+private double orarioChiusura;
+public double getOrarioApertura() {
 	return orarioApertura;
 }
-public void setOrarioApertura(LocalDate orarioApertura) {
+public void setOrarioApertura(double orarioApertura) {
 	this.orarioApertura = orarioApertura;
 }
-public LocalDate getOrarioChiusura() {
+public double getOrarioChiusura() {
 	return orarioChiusura;
 }
-public void setOrarioChiusura(LocalDate orarioChiusura) {
+public void setOrarioChiusura(double orarioChiusura) {
 	this.orarioChiusura = orarioChiusura;
 }
 @Override
