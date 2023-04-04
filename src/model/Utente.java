@@ -18,8 +18,8 @@ public class Utente {
 	private String cognome;
 	@OneToMany(mappedBy = "utente_proprietario")
 	private Set<Tessera> tessera_utente;
-	@OneToMany
-	private List<Biglietto> biglietti;
+	@OneToMany(mappedBy = "utente")
+	private Set<Biglietto> biglietti;
 	
 	
 	public Utente() {
@@ -59,11 +59,11 @@ public class Utente {
 		this.tessera_utente = tesseraUtente;
 	}
 
-	public List<Biglietto> getBiglietti() {
+	public Set<Biglietto> getBiglietti() {
 		return biglietti;
 	}
 
-	public void setBiglietti(List<Biglietto> biglietti) {
+	public void setBiglietti(Set<Biglietto> biglietti) {
 		this.biglietti = biglietti;
 	}
 

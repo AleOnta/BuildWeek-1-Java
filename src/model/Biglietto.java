@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Entity
 public class Biglietto extends Titolo_di_Viaggio {
 
-	//@ManyToOne
+	@ManyToOne
+	@JoinColumn(name = "biglietti_utentiet")
 	private Utente utente;
 	@Column(nullable = true)
 	private LocalDate utilizzo;
@@ -16,6 +17,8 @@ public class Biglietto extends Titolo_di_Viaggio {
 	public Biglietto() {
 		super();
 	}
+	
+	// USATO STRINGA COME EMITTENTE PER FARE TEST CON BIGLIETTO E TABELLA; ERA CLASS --> VENDITA BIGLIETTO
 	
 	public Biglietto(VenditaBiglietto emittente, LocalDate dataEmissione, Utente utente) {
 		super(emittente, dataEmissione);

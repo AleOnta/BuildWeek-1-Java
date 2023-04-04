@@ -26,12 +26,9 @@ public class Runnable {
 		Utente U1 = new Utente("Marcello","DeMarcelli");
 		em.persist(U1);
 		
-		Tessera T1= new Tessera();
-		T1.setUtenteProprietario(U1);
-		em.persist(T1);
-		Tessera T2= new Tessera();
-		T2.setUtenteProprietario(U1);
-		em.persist(T2);
+		
+		
+		
 		em.getTransaction().commit();
 		
 		em.refresh(U1);
