@@ -45,6 +45,8 @@ public class TransportDAO implements I_metodi{
 		 System.out.println("Error saving object: " + u.getClass().getSimpleName());
 		 System.out.println(ex);
 			throw ex;
+		} finally {
+			em.close();
 		}
 		
 	}
@@ -64,6 +66,8 @@ public class TransportDAO implements I_metodi{
 		 System.out.println("Error saving object: " + T.getClass().getSimpleName());
 		 System.out.println(ex);
 			throw ex;
+		} finally {
+			em.close();
 		}
 		
 	}

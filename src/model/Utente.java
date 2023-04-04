@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -10,13 +11,14 @@ public class Utente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_user")
 	private Long id_user;
 	@Column(nullable = false)
 	private String nome;
 	@Column(nullable = false)
 	private String cognome;
-	@OneToOne
-	private Tessera tesseraUtente;
+	@OneToMany(mappedBy = "utente_proprietario")
+	private Set<Tessera> tessera_utente;
 	@OneToMany
 	private List<Biglietto> biglietti;
 	
@@ -28,12 +30,16 @@ public class Utente {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
+		//this.tesseraUtente.setUtenteProprietario(this);
 	};
 
 	
-	  public Utente(String nome, String cognome, Tessera tesseraUtente) { super();
-	  this.nome = nome; this.cognome = cognome; this.tesseraUtente.setUtenteProprietario(this);;
-	  }
+	public Utente(String nome, String cognome, Tessera tesseraUtente) { 
+		super();
+		this.nome = nome; 
+		this.cognome = cognome; 
+		
+	}
 	 
 
 	public Long getId() {
@@ -56,12 +62,12 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public Tessera getTesseraUtente() {
-		return tesseraUtente;
+	public Set<Tessera> getTessereUtente() {
+		return tessera_utente;
 	}
 
-	public void setTesseraUtente(Tessera tesseraUtente) {
-		this.tesseraUtente = tesseraUtente;
+	public void setTesseraUtente(Set<Tessera> tesseraUtente) {
+		this.tessera_utente = tesseraUtente;
 	}
 
 	public List<Biglietto> getBiglietti() {
@@ -74,7 +80,7 @@ public class Utente {
 
 	@Override
 	public String toString() {
-		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tesseraUtente
+		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tessera_utente
 				+ ", biglietti=" + biglietti + "]";
 	}
 	
