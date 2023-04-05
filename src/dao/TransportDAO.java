@@ -131,6 +131,22 @@ public class TransportDAO implements I_metodi{
 		}
 		return utenteTrovato;
 	}
+	public static Abbonamento findAbbonamento(Tessera i) {
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try { 
+			Query querySelect = em.createQuery("SELECT a FROM Abbonamento a WHERE a.id_tessera =" + i.getNumeroTessera());
+			Abbonamento resList =  (Abbonamento) querySelect.getResultList();
+			System.out.println(resList);
+			return resList;
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			System.out.println("Errore nel cercare l`abbonamento");
+			throw ex;
+		} finally {
+			em.close();
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Biglietto> trovaTuttiBiglietti() {
