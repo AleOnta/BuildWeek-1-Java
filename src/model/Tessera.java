@@ -15,10 +15,10 @@ public class Tessera {
 	private Long numero_tessera;
 	private LocalDate iscrizione;
 	private LocalDate scadenza;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_utente")
 	private Utente utente_proprietario;
-	@OneToMany(mappedBy = "tessera_proprietario")
+	@OneToMany(mappedBy = "tessera_proprietario", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private List<Abbonamento> abbonamenti = new ArrayList<Abbonamento>();
 	
 	public Tessera() {
@@ -55,7 +55,7 @@ public class Tessera {
 	}
 	
 	public List<Abbonamento> getAbbonamenti() {
-		System.out.println(abbonamenti);
+		System.out.print(abbonamenti + " - ");
 		return abbonamenti;
 	}
 

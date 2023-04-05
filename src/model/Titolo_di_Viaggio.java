@@ -12,7 +12,7 @@ public class Titolo_di_Viaggio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_emittente")
 	private VenditaBiglietto emittente;
 	@Column(name = "data_emissione")

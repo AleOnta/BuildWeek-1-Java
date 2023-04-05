@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Abbonamento extends Titolo_di_Viaggio {
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_tessera")
 	private Tessera tessera_proprietario;
 	@Enumerated(EnumType.STRING)
