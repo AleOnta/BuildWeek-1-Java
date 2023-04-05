@@ -1,4 +1,2 @@
 /META-INF/
-/model/
-/dao/
-/trasportoRunnable/
+/persistence.xml/
