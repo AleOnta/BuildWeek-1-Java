@@ -17,8 +17,6 @@ public class Biglietto extends Titolo_di_Viaggio {
 		super();
 	}
 	
-	// USATO STRINGA COME EMITTENTE PER FARE TEST CON BIGLIETTO E TABELLA; ERA CLASS --> VENDITA BIGLIETTO
-	
 	public Biglietto(VenditaBiglietto emittente, LocalDate dataEmissione, Utente utente) {
 		super(emittente, dataEmissione);
 		this.utente_prop = utente;
