@@ -1,7 +1,6 @@
 package trasportoRunnable;
 
 import dao.TransportDAO;
-
 import java.util.List;
 import java.util.Scanner;
 import utils.JpaUtil;
