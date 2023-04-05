@@ -68,7 +68,7 @@ public class Runnable {
         	// chiudo la transaction
     		em.getTransaction().commit();
     		em.refresh(u1);
-    		t1.getAbbonamenti();
+    		
     	} catch (Exception e) {
     		em.getTransaction().rollback();
     	} finally {

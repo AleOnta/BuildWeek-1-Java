@@ -2,7 +2,6 @@ package dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-
 import model.Biglietto;
 import model.Tessera;
 import model.Utente;
