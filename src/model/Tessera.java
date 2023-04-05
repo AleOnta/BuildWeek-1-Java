@@ -1,6 +1,8 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -16,6 +18,8 @@ public class Tessera {
 	@ManyToOne
 	@JoinColumn(name = "id_utente")
 	private Utente utente_proprietario;
+	@OneToMany(mappedBy = "tessera_proprietario")
+	private List<Abbonamento> abbonamenti = new ArrayList<Abbonamento>();
 	
 	public Tessera() {
 		super();
@@ -48,6 +52,11 @@ public class Tessera {
 
 	public Long getNumeroTessera() {
 		return numero_tessera;
+	}
+	
+	public List<Abbonamento> getAbbonamenti() {
+		System.out.println(abbonamenti);
+		return abbonamenti;
 	}
 
 	@Override
