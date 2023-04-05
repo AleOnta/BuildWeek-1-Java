@@ -63,11 +63,11 @@ public class Utente {
 		this.tessera_utente = tesseraUtente;
 	}
 
-	public List<Biglietto> getBiglietti() {
+	public Set<Biglietto> getBiglietti() {
 		return biglietti;
 	}
 
-	public void setBiglietti(List<Biglietto> biglietti) {
+	public void setBiglietti(Set<Biglietto> biglietti) {
 		this.biglietti = biglietti;
 	}
 
