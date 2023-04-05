@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "utenti")
 @NamedQuery(name = "utenti.findBigliettiUtente", query = "SELECT b FROM Biglietto b")
+@NamedQuery(name = "utenti.findTessereUtente", query = "SELECT t FROM Tessera t WHERE t.utente_proprietario.id_user = :id")
 public class Utente {
 	
 	@Id
@@ -20,10 +21,10 @@ public class Utente {
 	@Column(nullable = false)
 	private String cognome;
 	
-	@OneToMany(mappedBy = "utente_proprietario", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "utente_proprietario", cascade = CascadeType.ALL)
 	private List<Tessera> tessera_utente = new ArrayList<Tessera>();
 	
-	@OneToMany(mappedBy="utente_prop", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="utente_prop", cascade = CascadeType.ALL)
 	private List<Biglietto> biglietti = new ArrayList<Biglietto>();
 	
 	
@@ -60,9 +61,9 @@ public class Utente {
 		return tessera_utente;
 	}
 
-	public void setTesseraUtente(List<Tessera> tesseraUtente) {
-		this.tessera_utente = tesseraUtente;
-	}
+	public void setTesseraUtente(Tessera tesseraUtente) {
+        this.tessera_utente.add(tesseraUtente);
+    }
 
 	public List<Biglietto> getBiglietti() {
 		return biglietti;

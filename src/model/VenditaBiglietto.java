@@ -1,10 +1,8 @@
 package model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +21,7 @@ public class VenditaBiglietto implements Serializable {
 	@GeneratedValue (strategy=GenerationType.IDENTITY)
 	private Long id_rivenditore;
 	private String luogo;
-	@OneToMany(mappedBy = "emittente")
+	@OneToMany(mappedBy = "emittente", cascade = CascadeType.ALL)
 	private List<Biglietto> bigliettiVenduti;
 	
 	

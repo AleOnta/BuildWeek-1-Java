@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +17,7 @@ public class Tessera {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_utente")
 	private Utente utente_proprietario;
-	@OneToMany(mappedBy = "tessera_proprietario", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "tessera_proprietario", cascade = CascadeType.ALL)
 	private List<Abbonamento> abbonamenti = new ArrayList<Abbonamento>();
 	
 	public Tessera() {

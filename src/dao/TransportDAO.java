@@ -1,14 +1,14 @@
 package dao;
 
+import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-
 import model.Abbonamento;
 import model.Biglietto;
 import model.Tessera;
+import model.Titolo_di_Viaggio;
 import model.Utente;
 import model.VenditaBiglietto;
 import utils.JpaUtil;
@@ -121,11 +121,9 @@ public class TransportDAO implements I_metodi{
 			em.getTransaction().begin();
 			utenteTrovato = em.find(Utente.class, id);
 			em.getTransaction().commit();
-			System.out.println("Abbonamento sottoscritto correttamente");
 		} catch (Exception e) {
 			e.printStackTrace();
 			em.getTransaction().rollback();
-			System.out.println("Errore nella sottoscrizione dell'abbonamento");
 		} finally {
 			em.close();
 		}
@@ -139,5 +137,20 @@ public class TransportDAO implements I_metodi{
 		return q.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Tessera> trovaTutteTessere(int id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("utenti.findTessereUtente");
+		q.setParameter("id", (long)id);
+		return q.getResultList();
+	}
+	
+	public List<Titolo_di_Viaggio> findEmessiInData(LocalDate dataUno, LocalDate dataDue) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Titolo.emessiInData");
+		q.setParameter("data1", dataUno);
+		q.setParameter("data2", dataDue);
+		return q.getResultList();
+	}
 
 }

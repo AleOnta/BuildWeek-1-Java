@@ -1,12 +1,7 @@
 package trasportoRunnable;
 
 import dao.TransportDAO;
-import java.util.List;
-import java.util.Scanner;
-import utils.JpaUtil;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import javax.persistence.EntityManager;
 import model.*;
 
 public class Runnable {
@@ -15,7 +10,8 @@ public class Runnable {
     
 	public static void main(String[] args) {
     
-		// Creazione di un utente:
+		
+		 // Creazione di un utente:
 		Utente u1 = new Utente();
 		u1.setNome("Utente 1");
 		u1.setCognome("DiProva");
@@ -43,14 +39,17 @@ public class Runnable {
     	b1.setEmittente(d1);
     	TD.salvaBiglietto(b1, u1); // il collegamento del biglietto all'utente avviene in TransportDAO
     	
-    	// Creazione di un abbonamento legato ad una tessera utente
-    	Abbonamento a1 = r1.vendiAbbonamento(u1, E_Abbonamento.MENSILE);
+    	// Creazione di un abbonamento passando una tessera
+    	Abbonamento a1 = r1.vendiAbbonamento(t1, E_Abbonamento.MENSILE);
     	TD.salvaAbbonamento(a1, t1);
     	
-    	// Ricerca di un utente nel DB tramite id
-    	Utente u2 = TD.findEntity(3l);
-    	List<Biglietto> lb = TD.trovaTuttiBiglietti();
-    	System.out.println(lb);
+    	
+    	/*List<Titolo_di_Viaggio> lT = TD.findEmessiInData(LocalDate.of(2023, 01, 20), LocalDate.of(2023, 03, 25));
+    	for (Titolo_di_Viaggio t : lT) {
+    		System.out.println(t);
+    	}*/
+    	
+    	
 	}
 
 }

@@ -58,7 +58,22 @@ private Time orarioChiusura;
 				newAbb.setTipologia(tipo);
 				newAbb.setEmittente(this);
 			}
-			
+		}
+		return newAbb;
+	}	
+	
+	public Abbonamento vendiAbbonamento(Tessera tess, E_Abbonamento tipo) {
+		Abbonamento newAbb = new Abbonamento();
+		if (tess.getScadenza().isBefore(LocalDate.now())) {
+			System.out.println("la tessera è ormai scaduta, la stiamo rinnovando per un altro anno");
+			tess.setScadenza(LocalDate.now().plusYears(1));
+			newAbb.setTessera_proprietario(tess);
+			newAbb.setTipologia(tipo);
+			newAbb.setEmittente(this);
+		} else {
+			newAbb.setTessera_proprietario(tess);
+			newAbb.setTipologia(tipo);
+			newAbb.setEmittente(this);
 		}
 		return newAbb;
 	}	
