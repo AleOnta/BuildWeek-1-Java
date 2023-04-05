@@ -3,6 +3,7 @@ package dao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import model.Biglietto;
 import model.Tessera;
 import model.Utente;
 import model.VenditaBiglietto;
@@ -11,6 +12,8 @@ import utils.JpaUtil;
 public class TransportDAO implements I_metodi{
 	public TransportDAO() {
 	}
+	
+	// Metodi relativi alla vendita dei biglietti / abbonamenti
 	public static void salvaDistributore(VenditaBiglietto R) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
@@ -50,7 +53,7 @@ public class TransportDAO implements I_metodi{
 		}
 		
 	}
-
+	
 	public void salvaTessera(Tessera T) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
@@ -71,5 +74,35 @@ public class TransportDAO implements I_metodi{
 		}
 		
 	}
+
+	public void salvaBiglietto(Biglietto b, Utente u) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			b.setUtente(u);
+			em.persist(b);
+			em.refresh(u);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void salvaAbbonamento() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
 
 }

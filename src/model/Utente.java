@@ -1,7 +1,7 @@
 package model;
 
 import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 import javax.persistence.*;
 
 @Entity
@@ -12,14 +12,18 @@ public class Utente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user")
 	private Long id_user;
+	
 	@Column(nullable = false)
 	private String nome;
+	
 	@Column(nullable = false)
 	private String cognome;
+	
 	@OneToMany(mappedBy = "utente_proprietario")
-	private Set<Tessera> tessera_utente;
-	@OneToMany(mappedBy = "utente")
-	private Set<Biglietto> biglietti;
+	private List<Tessera> tessera_utente = new ArrayList<Tessera>();
+	
+	@OneToMany(mappedBy="utente_prop")
+	private List<Biglietto> biglietti = new ArrayList<Biglietto>();
 	
 	
 	public Utente() {
@@ -51,11 +55,11 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public Set<Tessera> getTessereUtente() {
+	public List<Tessera> getTessereUtente() {
 		return tessera_utente;
 	}
 
-	public void setTesseraUtente(Set<Tessera> tesseraUtente) {
+	public void setTesseraUtente(List<Tessera> tesseraUtente) {
 		this.tessera_utente = tesseraUtente;
 	}
 
@@ -67,10 +71,14 @@ public class Utente {
 		this.biglietti = biglietti;
 	}
 
+	public void printBiglietti() {
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tessera_utente
-				+ ", biglietti=" + biglietti + "]";
+				+ "]";
 	}
 	
 	

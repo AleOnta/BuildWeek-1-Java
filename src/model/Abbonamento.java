@@ -6,9 +6,9 @@ import javax.persistence.*;
 @Entity
 public class Abbonamento extends Titolo_di_Viaggio {
 	
-	//@ManyToOne
-	@Column(name = "id_tessera")
-	private Long tesseraId;
+	@ManyToOne
+	@JoinColumn(name = "id_tessera")
+	private Tessera tessera_proprietario;
 	@Enumerated(EnumType.STRING)
 	private E_Abbonamento tipologia;
 	private LocalDate scadenza;
@@ -29,12 +29,12 @@ public class Abbonamento extends Titolo_di_Viaggio {
 		}
 	}
 
-	public Long getTesseraId() {
-		return tesseraId;
+	public Tessera getTessera_proprietario() {
+		return tessera_proprietario;
 	}
 
-	public void setTesseraId(Long tesseraId) {
-		this.tesseraId = tesseraId;
+	public void setTessera_proprietario(Tessera tessera) {
+		this.tessera_proprietario = tessera;
 	}
 
 	public E_Abbonamento getTipologia() {
@@ -85,7 +85,7 @@ public class Abbonamento extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Abbonamento [" + super.toString() + ", tesseraId=" + tesseraId + ", tipologia=" + tipologia + ", scadenza=" + scadenza
+		return "Abbonamento [" + super.toString() + ", tesseraId=" + tessera_proprietario + ", tipologia=" + tipologia + ", scadenza=" + scadenza
 				+"]";
 	}
 	

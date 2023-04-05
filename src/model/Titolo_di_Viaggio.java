@@ -12,12 +12,15 @@ public class Titolo_di_Viaggio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@ManyToOne
+	@JoinColumn(name = "id_emittente")
 	private VenditaBiglietto emittente;
 	@Column(name = "data_emissione")
 	private LocalDate dataEmissione;
 		
 	public Titolo_di_Viaggio() {
 		super();
+		this.dataEmissione = LocalDate.now();
 	}
 
 	public Titolo_di_Viaggio(VenditaBiglietto emittente, LocalDate dataEmissione) {

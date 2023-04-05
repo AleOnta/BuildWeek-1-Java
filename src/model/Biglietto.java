@@ -8,8 +8,8 @@ import javax.persistence.*;
 public class Biglietto extends Titolo_di_Viaggio {
 
 	@ManyToOne
-	@JoinColumn(name = "biglietti_utentiet")
-	private Utente utente;
+	@JoinColumn(name = "utente_id")
+	private Utente utente_prop;
 	@Column(nullable = true)
 	private LocalDate utilizzo;
 	private boolean valido;
@@ -22,15 +22,15 @@ public class Biglietto extends Titolo_di_Viaggio {
 	
 	public Biglietto(VenditaBiglietto emittente, LocalDate dataEmissione, Utente utente) {
 		super(emittente, dataEmissione);
-		this.utente = utente;
+		this.utente_prop = utente;
 	}
 
 	public Utente getUtente() {
-		return utente;
+		return utente_prop;
 	}
 
 	public void setUtente(Utente utente) {
-		this.utente = utente;
+		this.utente_prop = utente;
 	}
 
 	public LocalDate getUtilizzo() {
@@ -39,6 +39,7 @@ public class Biglietto extends Titolo_di_Viaggio {
 
 	public void setUtilizzo(LocalDate utilizzo) {
 		this.utilizzo = utilizzo;
+		this.valido = false;
 	}
 
 	public boolean isValido() {
@@ -71,6 +72,12 @@ public class Biglietto extends Titolo_di_Viaggio {
 	public void setDataEmissione(LocalDate dataEmissione) {
 		// TODO Auto-generated method stub
 		super.setDataEmissione(dataEmissione);
+		LocalDate now = LocalDate.now();
+		if (now.isAfter(dataEmissione)) {
+			this.valido = true;
+		} else {
+			this.valido = false;
+		}
 	}
 
 	@Override
@@ -81,7 +88,7 @@ public class Biglietto extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Biglietto [" + super.toString() + ", utente=" + utente + ", utilizzo=" + utilizzo + ", valido=" + valido + "]";
+		return "Biglietto [" + super.toString() + ", utente=" + utente_prop + ", utilizzo=" + utilizzo + ", valido=" + valido + "]";
 	}
 
 	
