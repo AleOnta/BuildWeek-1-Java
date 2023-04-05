@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Biglietto extends Titolo_di_Viaggio {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "utente_id")
 	private Utente utente_prop;
 	@Column(nullable = true)

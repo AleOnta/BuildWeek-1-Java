@@ -61,12 +61,5 @@ private Time orarioChiusura;
 			
 		}
 		return newAbb;
-	}
-
-	@Override
-	public void vendiBiglietto() {
-		//metodo per la vendita del biglietto
-	}
-
-	
+	}	
 }

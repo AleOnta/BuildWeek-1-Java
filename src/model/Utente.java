@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "utenti")
+@NamedQuery(name = "utenti.findBigliettiUtente", query = "SELECT b FROM Biglietto b")
 public class Utente {
 	
 	@Id
@@ -19,10 +20,10 @@ public class Utente {
 	@Column(nullable = false)
 	private String cognome;
 	
-	@OneToMany(mappedBy = "utente_proprietario")
+	@OneToMany(mappedBy = "utente_proprietario", cascade = CascadeType.PERSIST)
 	private List<Tessera> tessera_utente = new ArrayList<Tessera>();
 	
-	@OneToMany(mappedBy="utente_prop")
+	@OneToMany(mappedBy="utente_prop", cascade = CascadeType.PERSIST)
 	private List<Biglietto> biglietti = new ArrayList<Biglietto>();
 	
 	
@@ -72,13 +73,12 @@ public class Utente {
 	}
 
 	public void printBiglietti() {
-		
+			System.out.println(biglietti);
 	}
 	
 	@Override
 	public String toString() {
-		return "UTENTE --> id=" + id_user + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tessera_utente
-				+ "]";
+		return "UTENTE --> id=" + id_user + ", n=" + nome + ", c=" + cognome + ", " + "]";
 	}
 	
 	
