@@ -154,6 +154,8 @@ public class TransportDAO implements I_metodi{
 		Query q = em.createNamedQuery("utenti.findBigliettiUtente");
 		return q.getResultList();
 	}
+
+
 	
 
 }

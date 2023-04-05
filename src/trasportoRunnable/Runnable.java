@@ -1,13 +1,9 @@
 package trasportoRunnable;
 
-import dao.TransportDAO;
 
+import dao.TransportDAO;
 import java.util.List;
-import java.util.Scanner;
-import utils.JpaUtil;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import javax.persistence.EntityManager;
 import model.*;
 
 public class Runnable {
@@ -49,7 +45,6 @@ public class Runnable {
     	TD.salvaAbbonamento(a1, t1);
     	
     	// Ricerca di un utente nel DB tramite id
-    	Utente u2 = TD.findEntity(3l);
     	List<Biglietto> lb = TD.trovaTuttiBiglietti();
     	System.out.println(lb);
 	}
