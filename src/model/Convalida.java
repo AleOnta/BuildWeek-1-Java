@@ -8,6 +8,7 @@ import model_parco_mezzi.Veicolo;
 
 @Entity
 @Table(name = "convalidazioni")
+@NamedQuery(name = "Convalide.emesseInData", query = "SELECT c FROM Convalida c WHERE c.data_convalida BETWEEN :data1 AND :data2")
 public class Convalida {
 	
 	@Id

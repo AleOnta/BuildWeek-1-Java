@@ -43,8 +43,12 @@ public class Runnable {
     	TD.salvaBiglietto(b1, u1); // il collegamento del biglietto all'utente avviene in TransportDAO
     	
     	Biglietto b2 = new Biglietto();
-    	b1.setEmittente(d1);
+    	b2.setEmittente(d1);
     	TD.salvaBiglietto(b2, u1); // il collegamento del biglietto all'utente avviene in TransportDAO
+    	
+    	Biglietto b3 = new Biglietto();
+    	b3.setEmittente(d1);
+    	TD.salvaBiglietto(b3, u1);
     	
     	// Creazione di un abbonamento passando una tessera
     	Abbonamento a1 = r1.vendiAbbonamento(t1, E_Abbonamento.MENSILE);
@@ -77,8 +81,13 @@ public class Runnable {
 		Convalida c2 = new Convalida (b2, v1); 
 		TD.salvaConvalida(c2);
 		
+		Convalida c3 = new Convalida (b3,v1);
+		c3.setData_convalida(LocalDate.of(2023, 10, 10));
+		TD.salvaConvalida(c3);
 		
-		System.out.println(TD.findConvalida(v1));
+		
+		//System.out.println(TD.findConvalida(v1));
+		System.out.println(TD.findConvalidatiInData(LocalDate.of(2023, 4, 1),LocalDate.of(2023, 5, 30)));
     	
     	/*List<Titolo_di_Viaggio> lT = TD.findEmessiInData(LocalDate.of(2023, 01, 20), LocalDate.of(2023, 03, 25));
     	for (Titolo_di_Viaggio t : lT) {

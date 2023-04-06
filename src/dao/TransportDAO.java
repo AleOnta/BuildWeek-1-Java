@@ -245,4 +245,12 @@ public class TransportDAO implements I_metodi{
 				System.out.println("Biglietto già convalidato, rivolgiti ad un rivenditore per acquistarne un nuovo");
 			}
 		}
+		public List<Convalida> findConvalidatiInData(LocalDate dataUno, LocalDate dataDue) {
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			Query q = em.createNamedQuery("Convalide.emesseInData");
+			q.setParameter("data1", dataUno);
+			q.setParameter("data2", dataDue);
+			return q.getResultList();
+		}
+
 }
