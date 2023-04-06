@@ -66,8 +66,8 @@ public class Convalida {
 
 	@Override
 	public String toString() {
-		return "Convalida [id_convalida=" + id_convalida + ", biglietto=" + biglietto + ", convalidato_su="
-				+ convalidato_su + "]";
+		return "Convalida [id_convalida=" + id_convalida + ", id_biglietto = " + biglietto.getId() +
+				", id_veicolo = " + convalidato_su.getId_veicolo() + "]";
 	}
 	
 	

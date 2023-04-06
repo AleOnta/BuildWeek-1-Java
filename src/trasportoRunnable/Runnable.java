@@ -81,10 +81,6 @@ public class Runnable {
 		Convalida c2 = new Convalida (b2, v1); 
 		TD.salvaEntita(c2);
 		
-		Convalida c3 = new Convalida (b3,v1);
-		c3.setData_convalida(LocalDate.of(2023, 10, 10));
-		TD.salvaEntita(c3);
-		
 		
 		//System.out.println(TD.findConvalida(v1));
 		//System.out.println(TD.findConvalidatiInData(LocalDate.of(2023, 4, 1),LocalDate.of(2023, 5, 30)));
@@ -104,6 +100,10 @@ public class Runnable {
 		  
 		  
 		listaVeicoli.get(1).startViaggio();
+		List<Biglietto> ls = TD.trovaTuttiBiglietti();
+		for (Biglietto b : ls) {
+			System.out.println(b);
+		}
 		  
 	}
 

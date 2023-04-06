@@ -33,16 +33,14 @@ public class Biglietto extends Titolo_di_Viaggio {
 		this.utente_prop = utente;
 	}
 
-	/*
-	public LocalDate getUtilizzo() {
-		return utilizzo;
+	
+	public String getUtilizzo() {
+		if (utilizzo.size() > 0) {
+			return utilizzo.get(0).getId_convalida().toString();
+		} else {
+			return "non convalidato";
+		}
 	}
-
-	public void setUtilizzo(LocalDate utilizzo) {
-		this.utilizzo = utilizzo;
-		this.valido = false;
-	}
-	*/
 
 	public boolean isValido() {
 		return valido;
@@ -78,8 +76,11 @@ public class Biglietto extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Biglietto [" + super.toString() + ", utente=" + utente_prop + ", valido=" + valido + "]";
+		return "Biglietto [Id = " + getId() + ", idUtenteProprietario = " + utente_prop.getId() + ", Emittente = " + getEmittente() 
+		+ ", DataEmissione = " + getDataEmissione() + ", validità = " + valido + ", convalida = " + getUtilizzo() + "]";
 	}
+
+	
 
 	
 	

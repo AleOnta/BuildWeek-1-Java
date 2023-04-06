@@ -1,6 +1,7 @@
 package dao;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -381,7 +382,7 @@ public class TransportDAO implements I_metodi{
 	
 	// Metodi relativi alla ricerca di entità
 	
-	public VenditaBiglietto findEmittente(long id) {
+	public VenditaBiglietto findEmittente(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		VenditaBiglietto entitaTrovata = null;
 		try {
@@ -397,7 +398,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Utente findUtente(long id) {
+	public Utente findUtente(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Utente entitaTrovata = null;
 		try {
@@ -413,7 +414,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Tessera findTessera(long id) {
+	public Tessera findTessera(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Tessera entitaTrovata = null;
 		try {
@@ -429,7 +430,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Biglietto findBiglietto(long id) {
+	public Biglietto findBiglietto(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Biglietto entitaTrovata = null;
 		try {
@@ -445,7 +446,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Abbonamento findAbbonamento(long id) {
+	public Abbonamento findAbbonamento(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Abbonamento entitaTrovata = null;
 		try {
@@ -461,7 +462,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Veicolo findVeicolo(long id) {
+	public Veicolo findVeicolo(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Veicolo entitaTrovata = null;
 		try {
@@ -477,7 +478,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Manutenzione findManutenzione(long id) {
+	public Manutenzione findManutenzione(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Manutenzione entitaTrovata = null;
 		try {
@@ -493,7 +494,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Convalida findConvalida(long id) {
+	public Convalida findConvalida(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Convalida entitaTrovata = null;
 		try {
@@ -509,7 +510,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Tratta findTratta(long id) {
+	public Tratta findTratta(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Tratta entitaTrovata = null;
 		try {
@@ -525,7 +526,7 @@ public class TransportDAO implements I_metodi{
 		return entitaTrovata;
 	}
 	
-	public Viaggio findViaggio(long id) {
+	public Viaggio findViaggio(Long id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Viaggio entitaTrovata = null;
 		try {
@@ -739,6 +740,26 @@ public class TransportDAO implements I_metodi{
 
 	// Metodi custom JPQL 
 	
+	@SuppressWarnings("unchecked")
+	public List<Biglietto> trovaBigliettiUtente(Long id_utente) {
+		Utente utente = findUtente(id_utente);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		List<Biglietto> resList = new ArrayList<Biglietto>();
+		try { 
+			Query query = em.createNamedQuery("Biglietto.findByIdUtente");
+			query.setParameter("id", utente.getId());
+			resList = query.getResultList();
+		} catch (Exception e) {
+			System.out.println("Errore nella ricerca dei biglietti tramite utente");
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		
+		return resList;
+	}
+	
+	
 	public static Abbonamento findAbbonamentoTramiteTessera(Tessera i) {
 		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
@@ -774,7 +795,7 @@ public class TransportDAO implements I_metodi{
 	@SuppressWarnings("unchecked")
 	public List<Biglietto> trovaTuttiBiglietti() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-		Query q = em.createNamedQuery("utenti.findBigliettiUtente");
+		Query q = em.createNamedQuery("utenti.findBiglietti");
 		return q.getResultList();
 	}
 
