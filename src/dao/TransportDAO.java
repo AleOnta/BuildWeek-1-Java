@@ -12,7 +12,9 @@ import model.Tessera;
 import model.Titolo_di_Viaggio;
 import model.Utente;
 import model.VenditaBiglietto;
+import model.Viaggio;
 import model_parco_mezzi.Manutenzione;
+import model_parco_mezzi.Tratta;
 import model_parco_mezzi.Veicolo;
 import utils.JpaUtil;
 
@@ -252,5 +254,51 @@ public class TransportDAO implements I_metodi{
 			q.setParameter("data2", dataDue);
 			return q.getResultList();
 		}
+		
+		public void salvaTratta(Tratta tr, Veicolo v) {
+			v.setTappa_assegnata(tr);
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.merge(v);
+				em.persist(tr);
+				em.getTransaction().commit();
+				System.out.println("Tratta inserita correttamente");
+			} catch (Exception e) {
+				e.printStackTrace();
+				em.getTransaction().rollback();
+				System.out.println("Errore nell'inserimento della tratta");
+			} finally {
+				em.close();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List<Veicolo> trovaTuttiIVeicoli() {
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			Query q = em.createNamedQuery("Veicoli.CercaTuttiIVeicoli");
+			return q.getResultList();
+		}
+		
+		
+		public void salvaViaggio(Viaggio route, Veicolo v) {
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.merge(v);
+				em.persist(route);
+				em.getTransaction().commit();
+				System.out.println("Tratta inserita correttamente");
+			} catch (Exception e) {
+				e.printStackTrace();
+				em.getTransaction().rollback();
+				System.out.println("Errore nell'inserimento della tratta");
+			} finally {
+				em.close();
+			}
+		}
+
+		
+		
 
 }

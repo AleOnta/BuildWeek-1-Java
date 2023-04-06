@@ -3,6 +3,9 @@ package trasportoRunnable;
 import model_parco_mezzi.*;
 import dao.TransportDAO;
 import java.util.List;
+
+import javax.persistence.JoinColumn;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import model.*;
@@ -55,8 +58,8 @@ public class Runnable {
     	TD.salvaAbbonamento(a1, t1);
     	
 		
-		Veicolo v1 = new Veicolo();
-		Veicolo v2 = new Veicolo(E_Veicolo.TRAM);
+		//Veicolo v1 = new Veicolo();
+		//Veicolo v2 = new Veicolo(E_Veicolo.TRAM);
 		Manutenzione m1 = new Manutenzione();
 		m1.setInizio(LocalDate.of(2021, 8, 15));
 		m1.setFine(LocalDate.of(2021, 12, 20));
@@ -67,15 +70,17 @@ public class Runnable {
 		m3.setInizio(LocalDate.of(2022, 5, 10));
 		m3.setFine(LocalDate.of(2022, 11, 30));
 		
-		TD.salvaMezzo(v1);
-		TD.salvaMezzo(v2);
-		TD.salvaManutenzione(v1, m1);
-		TD.salvaManutenzione(v1, m2);
-		TD.salvaManutenzione(v2, m3);
+		//TD.salvaMezzo(v1);
+		//TD.salvaMezzo(v2);
+		//TD.salvaManutenzione(v1, m1);
+		//TD.salvaManutenzione(v1, m2);
+		//TD.salvaManutenzione(v2, m3);
 		
 		
+
 		
-		Convalida c1 = new Convalida(b1, v1);
+		
+		/*Convalida c1 = new Convalida(b1, v1);
 		TD.salvaConvalida(c1);
 		
 		Convalida c2 = new Convalida (b2, v1); 
@@ -83,18 +88,28 @@ public class Runnable {
 		
 		Convalida c3 = new Convalida (b3,v1);
 		c3.setData_convalida(LocalDate.of(2023, 10, 10));
-		TD.salvaConvalida(c3);
+		TD.salvaConvalida(c3);*/
 		
 		
 		//System.out.println(TD.findConvalida(v1));
-		System.out.println(TD.findConvalidatiInData(LocalDate.of(2023, 4, 1),LocalDate.of(2023, 5, 30)));
+		//System.out.println(TD.findConvalidatiInData(LocalDate.of(2023, 4, 1),LocalDate.of(2023, 5, 30)));
     	
     	/*List<Titolo_di_Viaggio> lT = TD.findEmessiInData(LocalDate.of(2023, 01, 20), LocalDate.of(2023, 03, 25));
     	for (Titolo_di_Viaggio t : lT) {
     		System.out.println(t);
     	}*/
     	
-    	
+		
+		  Tratta tr1 = new Tratta(); tr1.setCapolinea("Mondello");
+		  tr1.setMedia_percorrenza(LocalTime.of(1, 30));
+		  tr1.setPunto_partenza("Stadio Delle Palme");
+		  //TD.salvaTratta(tr1,v2);
+		  
+		  List<Veicolo> listaVeicoli = TD.trovaTuttiIVeicoli();
+		  
+		  
+		  listaVeicoli.get(1).startViaggio();
+		  
 	}
 
 }

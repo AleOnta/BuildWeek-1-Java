@@ -1,10 +1,14 @@
 package model_parco_mezzi;
 
 import model.Convalida;
+import model.Viaggio;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.*;
+
+import dao.TransportDAO;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.time.LocalDate;
@@ -12,6 +16,7 @@ import model.Biglietto;
 
 @Entity
 @Table(name = "veicoli")
+@NamedQuery(name="Veicoli.CercaTuttiIVeicoli", query= "SELECT v FROM Veicolo v")
 public class Veicolo {
 	
 	@Id
@@ -35,11 +40,30 @@ public class Veicolo {
 	@OneToMany(mappedBy = "id_veicolo", cascade = CascadeType.ALL)
 	private List<Manutenzione> manutenzioni = new ArrayList<Manutenzione>();
 	
+	@OneToOne(cascade=CascadeType.ALL)
+	private Tratta tappa_assegnata;
+	
+	@OneToMany(mappedBy="mezzo",cascade=CascadeType.ALL)
+	private List<Viaggio> lista_viaggi = new ArrayList<Viaggio>();
+	@Column(nullable = false)
+	private int counter;
+	
+	
+	public void startViaggio() {
+		counter++;
+		Viaggio v = new Viaggio();
+		v.setMezzo(this);
+		v.randomPercorrenza();
+		TransportDAO TD = new TransportDAO();
+		TD.salvaViaggio(v, this);
+	}
+	
 	public Veicolo() {
 		super();
 		status = E_StatusVeicolo.IN_SERVIZIO;
 		tipologia = E_Veicolo.AUTOBUS;
 		capienza = 65;
+		counter =0;
 	}
 	
 	public Veicolo(E_Veicolo type) {
@@ -47,6 +71,7 @@ public class Veicolo {
 		status = E_StatusVeicolo.IN_SERVIZIO;
 		tipologia = type;
 		capienza = setCapienzaByTipo(type);
+		counter =0;
 	}
 
 	public int setCapienzaByTipo(E_Veicolo type) {
@@ -92,6 +117,12 @@ public class Veicolo {
 	public void setStatus(E_StatusVeicolo status) {
 		this.status = status;
 	}
+	
+	
+	public void setTappa_assegnata(Tratta tappa_assegnata) {
+		this.tappa_assegnata = tappa_assegnata;
+	}
+
 	/*
 	public List<Biglietto> getBigliettiVidimati() {
 		return bigliettiVidimati;
