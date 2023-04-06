@@ -146,6 +146,20 @@ public class TransportDAO implements I_metodi{
 			em.close();
 		}
 	}
+	public static List<Convalida> findConvalida(Veicolo v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try { 
+			Query querySelect = em.createQuery("SELECT c FROM Convalida c WHERE c.convalidato_su =" + v.getId_veicolo());
+			List<Convalida> resList = querySelect.getResultList();
+			return resList;
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			System.out.println("Errore nel cercare il biglietto");
+			throw ex;
+		} finally {
+			em.close();
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Biglietto> trovaTuttiBiglietti() {

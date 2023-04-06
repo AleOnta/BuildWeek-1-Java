@@ -8,7 +8,6 @@ import model_parco_mezzi.Veicolo;
 
 @Entity
 @Table(name = "convalidazioni")
-
 public class Convalida {
 	
 	@Id

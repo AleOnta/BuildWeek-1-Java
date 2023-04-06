@@ -73,8 +73,12 @@ public class Runnable {
 		
 		Convalida c1 = new Convalida(b1, v1);
 		TD.salvaConvalida(c1);
-		TD.salvaConvalida(c1);
 		
+		Convalida c2 = new Convalida (b2, v1); 
+		TD.salvaConvalida(c2);
+		
+		
+		System.out.println(TD.findConvalida(v1));
     	
     	/*List<Titolo_di_Viaggio> lT = TD.findEmessiInData(LocalDate.of(2023, 01, 20), LocalDate.of(2023, 03, 25));
     	for (Titolo_di_Viaggio t : lT) {

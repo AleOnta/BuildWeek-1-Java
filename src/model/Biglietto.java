@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "Biglietto.trovaBigliettiVidimati", query = "SELECT b FROM Biglietto b")
+
 public class Biglietto extends Titolo_di_Viaggio {
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
