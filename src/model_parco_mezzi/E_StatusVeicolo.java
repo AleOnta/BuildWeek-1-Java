@@ -1,4 +1,4 @@
-package model_veicoli;
+package model_parco_mezzi;
 
 public enum E_StatusVeicolo {
 	IN_SERVIZIO,

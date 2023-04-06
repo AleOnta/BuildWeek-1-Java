@@ -1,16 +1,19 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = "Biglietto.trovaBigliettiVidimati", query = "SELECT b FROM Biglietto b")
 public class Biglietto extends Titolo_di_Viaggio {
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "utente_id")
 	private Utente utente_prop;
-	@Column(nullable = true)
-	private LocalDate utilizzo;
+	@OneToMany(mappedBy = "biglietto", cascade = CascadeType.ALL)
+	private List<Convalida> utilizzo;
 	private boolean valido;
 	
 	public Biglietto() {
@@ -30,6 +33,7 @@ public class Biglietto extends Titolo_di_Viaggio {
 		this.utente_prop = utente;
 	}
 
+	/*
 	public LocalDate getUtilizzo() {
 		return utilizzo;
 	}
@@ -38,6 +42,7 @@ public class Biglietto extends Titolo_di_Viaggio {
 		this.utilizzo = utilizzo;
 		this.valido = false;
 	}
+	*/
 
 	public boolean isValido() {
 		return valido;
@@ -66,18 +71,6 @@ public class Biglietto extends Titolo_di_Viaggio {
 	}
 
 	@Override
-	public void setDataEmissione(LocalDate dataEmissione) {
-		// TODO Auto-generated method stub
-		super.setDataEmissione(dataEmissione);
-		LocalDate now = LocalDate.now();
-		if (now.isAfter(dataEmissione)) {
-			this.valido = true;
-		} else {
-			this.valido = false;
-		}
-	}
-
-	@Override
 	public Long getId() {
 		// TODO Auto-generated method stub
 		return super.getId();
@@ -85,7 +78,7 @@ public class Biglietto extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Biglietto [" + super.toString() + ", utente=" + utente_prop + ", utilizzo=" + utilizzo + ", valido=" + valido + "]";
+		return "Biglietto [" + super.toString() + ", utente=" + utente_prop + ", valido=" + valido + "]";
 	}
 
 	

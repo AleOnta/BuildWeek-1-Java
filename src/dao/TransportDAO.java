@@ -7,10 +7,13 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import model.Abbonamento;
 import model.Biglietto;
+import model.Convalida;
 import model.Tessera;
 import model.Titolo_di_Viaggio;
 import model.Utente;
 import model.VenditaBiglietto;
+import model_parco_mezzi.Manutenzione;
+import model_parco_mezzi.Veicolo;
 import utils.JpaUtil;
 
 public class TransportDAO implements I_metodi{
@@ -74,10 +77,11 @@ public class TransportDAO implements I_metodi{
 	}
 
 	public void salvaBiglietto(Biglietto b, Utente u) {
+		b.setUtente(u);
+		b.setValido(true);
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
-			b.setUtente(u);
 			em.persist(b);
 			em.getTransaction().commit();
 			System.out.println("Biglietto acquistato correttamente");
@@ -109,9 +113,6 @@ public class TransportDAO implements I_metodi{
 				em.close();
 			}
 		}
-	}
-	
-	public void findEntity() {
 	}
 	
 	public Utente findEntity(long id) {
@@ -171,4 +172,63 @@ public class TransportDAO implements I_metodi{
 		return q.getResultList();
 	}
 
+	// METODI PER LA GESTIONE DEL PARCO MEZZI
+	
+	public void salvaMezzo(Veicolo v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(v);
+			em.getTransaction().commit();
+			System.out.println("Veicolo inserito correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void salvaManutenzione(Veicolo v, Manutenzione m) {
+		m.setId_veicolo(v);
+		v.checkStatus(m);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(m);
+			em.merge(v);
+			em.getTransaction().commit();
+			System.out.println("Manutenzione veicolo inserita correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento della manutenzione del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+		public void salvaConvalida(Convalida c) {
+			if (c.getBiglietto().isValido()) {
+				Biglietto b = c.getBiglietto();
+			b.setValido(false);
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.persist(c);
+				em.merge(b);
+				em.getTransaction().commit();
+				System.out.println("Convalida biglietto effetuata correttamente");
+			} catch (Exception e) {
+				e.printStackTrace();
+				em.getTransaction().rollback();
+				System.out.println("Errore nella convalida del biglietto");
+			} finally {
+				em.close();
+			}
+			} else {
+				System.out.println("Biglietto già convalidato, rivolgiti ad un rivenditore per acquistarne un nuovo");
+			}
+		}
 }

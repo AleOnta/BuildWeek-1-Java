@@ -1,7 +1,9 @@
 package trasportoRunnable;
 
+import model_parco_mezzi.*;
 import dao.TransportDAO;
 import java.util.List;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import model.*;
 
@@ -40,10 +42,39 @@ public class Runnable {
     	b1.setEmittente(d1);
     	TD.salvaBiglietto(b1, u1); // il collegamento del biglietto all'utente avviene in TransportDAO
     	
+    	Biglietto b2 = new Biglietto();
+    	b1.setEmittente(d1);
+    	TD.salvaBiglietto(b2, u1); // il collegamento del biglietto all'utente avviene in TransportDAO
+    	
     	// Creazione di un abbonamento passando una tessera
     	Abbonamento a1 = r1.vendiAbbonamento(t1, E_Abbonamento.MENSILE);
     	TD.salvaAbbonamento(a1, t1);
     	
+		
+		Veicolo v1 = new Veicolo();
+		Veicolo v2 = new Veicolo(E_Veicolo.TRAM);
+		Manutenzione m1 = new Manutenzione();
+		m1.setInizio(LocalDate.of(2021, 8, 15));
+		m1.setFine(LocalDate.of(2021, 12, 20));
+		Manutenzione m2 = new Manutenzione();
+		m2.setInizio(LocalDate.of(2023, 2, 10));
+		m2.setFine(LocalDate.of(2023, 11, 05));
+		Manutenzione m3 = new Manutenzione();
+		m3.setInizio(LocalDate.of(2022, 5, 10));
+		m3.setFine(LocalDate.of(2022, 11, 30));
+		
+		TD.salvaMezzo(v1);
+		TD.salvaMezzo(v2);
+		TD.salvaManutenzione(v1, m1);
+		TD.salvaManutenzione(v1, m2);
+		TD.salvaManutenzione(v2, m3);
+		
+		
+		
+		Convalida c1 = new Convalida(b1, v1);
+		TD.salvaConvalida(c1);
+		TD.salvaConvalida(c1);
+		
     	
     	/*List<Titolo_di_Viaggio> lT = TD.findEmessiInData(LocalDate.of(2023, 01, 20), LocalDate.of(2023, 03, 25));
     	for (Titolo_di_Viaggio t : lT) {
