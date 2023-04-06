@@ -55,7 +55,7 @@ public class Veicolo {
 		v.setMezzo(this);
 		v.randomPercorrenza();
 		TransportDAO TD = new TransportDAO();
-		TD.salvaViaggio(v, this);
+		TD.salvaEntita(v, this);
 	}
 	
 	public Veicolo() {

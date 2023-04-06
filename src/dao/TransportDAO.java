@@ -13,6 +13,7 @@ import model.Titolo_di_Viaggio;
 import model.Utente;
 import model.VenditaBiglietto;
 import model.Viaggio;
+import model_parco_mezzi.E_StatusVeicolo;
 import model_parco_mezzi.Manutenzione;
 import model_parco_mezzi.Tratta;
 import model_parco_mezzi.Veicolo;
@@ -22,13 +23,14 @@ public class TransportDAO implements I_metodi{
 	public TransportDAO() {
 	}
 	
-	// Metodi relativi alla vendita dei biglietti / abbonamenti
-	public void salvaDistributore(VenditaBiglietto R) {
+	// Metodi relativi al persist di entità
+	
+	public void salvaEntita(VenditaBiglietto r) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			EntityTransaction transaction = em.getTransaction();
 			transaction.begin();
-			em.persist(R);
+			em.persist(r);
 			transaction.commit();
 			System.out.println("Creazione dell'emittente eseguita correttamente");
 		} catch (Exception e) {
@@ -39,9 +41,8 @@ public class TransportDAO implements I_metodi{
 			em.close();
 		}
 	}
-
-
-	public void salvaUtente(Utente u) {
+	
+	public void salvaEntita(Utente u) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			EntityTransaction transaction = em.getTransaction();
@@ -59,14 +60,13 @@ public class TransportDAO implements I_metodi{
 		
 	}
 	
-	public void salvaTessera(Tessera t, Utente u) {
+	public void salvaEntita(Tessera t, Utente u) {
+		t.setUtenteProprietario(u);
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
-			EntityTransaction transaction = em.getTransaction();
-			transaction.begin();
-			t.setUtenteProprietario(u);
+			em.getTransaction().begin();
 			em.persist(t);
-			transaction.commit();
+			em.getTransaction().commit();
 			System.out.println("Tessera creata correttamente");
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -77,8 +77,8 @@ public class TransportDAO implements I_metodi{
 		}
 		
 	}
-
-	public void salvaBiglietto(Biglietto b, Utente u) {
+	
+	public void salvaEntita(Biglietto b, Utente u) {
 		b.setUtente(u);
 		b.setValido(true);
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
@@ -96,7 +96,7 @@ public class TransportDAO implements I_metodi{
 		}
 	}
 	
-	public void salvaAbbonamento(Abbonamento a, Tessera t) {
+	public void salvaEntita(Abbonamento a, Tessera t) {
 		if (a == null) {
 			System.out.println("Crea un'istanza tessera e salvala tramite salvaTessera() prima di sottoscrivere un'abbonamento");
 		} else {
@@ -117,12 +117,276 @@ public class TransportDAO implements I_metodi{
 		}
 	}
 	
-	public Utente findEntity(long id) {
+	public void salvaEntita(Veicolo v) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-		Utente utenteTrovato = null;
 		try {
 			em.getTransaction().begin();
-			utenteTrovato = em.find(Utente.class, id);
+			em.persist(v);
+			em.getTransaction().commit();
+			System.out.println("Veicolo inserito correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void salvaEntita(Veicolo v, Manutenzione m) {
+		m.setId_veicolo(v);
+		v.checkStatus(m);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(m);
+			em.merge(v);
+			em.getTransaction().commit();
+			System.out.println("Manutenzione veicolo inserita correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento della manutenzione del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void salvaEntita(Convalida c) {
+		if (c.getBiglietto().isValido()) {
+			Biglietto b = c.getBiglietto();
+			b.setValido(false);
+			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+			try {
+				em.getTransaction().begin();
+				em.persist(c);
+				em.merge(b);
+				em.getTransaction().commit();
+				System.out.println("Convalida biglietto effetuata correttamente");
+			} catch (Exception e) {
+				e.printStackTrace();
+				em.getTransaction().rollback();
+				System.out.println("Errore nella convalida del biglietto");
+			} finally {
+				em.close();
+			}
+		} else {
+			System.out.println("Biglietto già convalidato, rivolgiti ad un rivenditore per acquistarne un nuovo");
+		}
+	}
+		
+	public void salvaEntita(Tratta tr, Veicolo v) {
+		v.setTappa_assegnata(tr);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(v);
+			em.persist(tr);
+			em.getTransaction().commit();
+			System.out.println("Tratta inserita correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento della tratta");
+		} finally {
+			em.close();
+		}
+	}
+		
+	public void salvaEntita(Viaggio route, Veicolo v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(v);
+			em.persist(route);
+			em.getTransaction().commit();
+			System.out.println("Tratta inserita correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'inserimento della tratta");
+		} finally {
+			em.close();
+		}
+	}
+	
+	// Metodi relativi all'aggiornamento dell'entità
+	
+	public void aggiornaEntita(VenditaBiglietto r) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+			em.merge(r);
+			transaction.commit();
+			System.out.println("Aggiornamento dell'emittente eseguita correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nell'aggiornamento dell'emittente");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void aggiornaEntita(Utente u) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+			em.merge(u);
+			transaction.commit();
+			System.out.println("Utente aggiornato correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nell'aggiornamento dell'utente");
+		} finally {
+			em.close();
+		}
+		
+	}
+	
+	public void aggiornaEntita(Tessera t) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(t);
+			em.getTransaction().commit();
+			System.out.println("Tessera aggiornata correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nell'aggiornamento della tessera");
+		} finally {
+			em.close();
+		}
+		
+	}
+	
+	public void aggiornaEntita(Biglietto b) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(b);
+			em.getTransaction().commit();
+			System.out.println("Biglietto aggiornato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento del biglietto");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void aggiornaEntita(Abbonamento a) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(a);
+			em.getTransaction().commit();
+			System.out.println("Abbonamento aggiornato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento dell'abbonamento");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void aggiornaEntita(Veicolo v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(v);
+			em.getTransaction().commit();
+			System.out.println("Veicolo aggiornato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void aggiornaEntita(Manutenzione m) {
+		Veicolo v = m.getId_veicolo();
+		v.checkStatus(m);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(m);
+			em.merge(v);
+			em.getTransaction().commit();
+			System.out.println("Manutenzione veicolo aggiornata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento della manutenzione del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void aggiornaEntita(Convalida c) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(c);
+			em.getTransaction().commit();
+			System.out.println("Convalida biglietto aggiornata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento della convalida del biglietto");
+		} finally {
+			em.close();
+		}
+	}
+		
+	public void aggiornaEntita(Tratta tr) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(tr);
+			em.getTransaction().commit();
+			System.out.println("Tratta aggiornata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento della tratta");
+		} finally {
+			em.close();
+		}
+	}
+		
+	public void aggiornaEntita(Viaggio v) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(v);
+			em.getTransaction().commit();
+			System.out.println("Viaggio aggiornato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento del viaggio");
+		} finally {
+			em.close();
+		}
+	}
+	
+	// Metodi relativi alla ricerca di entità
+	
+	public VenditaBiglietto findEmittente(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		VenditaBiglietto entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(VenditaBiglietto.class, id);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,9 +394,352 @@ public class TransportDAO implements I_metodi{
 		} finally {
 			em.close();
 		}
-		return utenteTrovato;
+		return entitaTrovata;
 	}
-	public static Abbonamento findAbbonamento(Tessera i) {
+	
+	public Utente findUtente(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Utente entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Utente.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Tessera findTessera(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Tessera entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Tessera.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Biglietto findBiglietto(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Biglietto entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Biglietto.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Abbonamento findAbbonamento(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Abbonamento entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Abbonamento.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Veicolo findVeicolo(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Veicolo entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Veicolo.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Manutenzione findManutenzione(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Manutenzione entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Manutenzione.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Convalida findConvalida(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Convalida entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Convalida.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Tratta findTratta(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Tratta entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Tratta.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	public Viaggio findViaggio(long id) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Viaggio entitaTrovata = null;
+		try {
+			em.getTransaction().begin();
+			entitaTrovata = em.find(Viaggio.class, id);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		} finally {
+			em.close();
+		}
+		return entitaTrovata;
+	}
+	
+	// Metodi relativi all'eliminazione delle entità
+	
+	public void eliminaEntita(VenditaBiglietto r) {
+		
+		VenditaBiglietto r2 = findEmittente(r.getId_rivenditore());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+			em.remove(r2);
+			transaction.commit();
+			System.out.println("Eliminazione dell'emittente eseguita correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nella eliminazione dell'emittente");
+		} finally {
+			em.close();
+		}
+	}
+
+	public void eliminaEntita(Utente u) {
+		
+		Utente u2 = findUtente(u.getId());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+			em.remove(u2);
+			transaction.commit();
+			System.out.println("Utente eliminato correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nell'eliminazione dell'utente");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Tessera t) {
+		
+		Tessera t2 = findTessera(t.getNumeroTessera());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(t2);
+			em.getTransaction().commit();
+			System.out.println("Tessera eliminata correttamente");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			System.out.println("Errore nell'eliminazione della tessera");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Biglietto b) {
+		
+		Biglietto b2 = findBiglietto(b.getId());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(b2);
+			em.getTransaction().commit();
+			System.out.println("Biglietto eliminato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione del biglietto");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Abbonamento a) {
+		
+		Abbonamento a2 = findAbbonamento(a.getId());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(a2);
+			em.getTransaction().commit();
+			System.out.println("Abbonamento eliminato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione dell'abbonamento");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Veicolo v) {
+		
+		Veicolo v2 = findVeicolo(v.getId_veicolo());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(v2);
+			em.getTransaction().commit();
+			System.out.println("Veicolo aggiornato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'aggiornamento del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Manutenzione m) {
+		
+		Manutenzione m2 = findManutenzione(m.getId());
+		Veicolo v = m2.getId_veicolo();
+		v.setStatus(E_StatusVeicolo.IN_SERVIZIO);
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(v);
+			em.remove(m2);
+			em.getTransaction().commit();
+			System.out.println("Manutenzione veicolo eliminata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione della manutenzione del veicolo");
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void eliminaEntita(Convalida c) {
+		
+		Convalida c2 = findConvalida(c.getId_convalida());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(c2);
+			em.getTransaction().commit();
+			System.out.println("Convalida biglietto eliminata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione della convalida del biglietto");
+		} finally {
+			em.close();
+		}
+	}
+		
+	public void eliminaEntita(Tratta tr) {
+		
+		Tratta tr2 = findTratta(tr.getId());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(tr2);
+			em.getTransaction().commit();
+			System.out.println("Tratta eliminata correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione della tratta");
+		} finally {
+			em.close();
+		}
+	}
+		
+	public void eliminaEmittente(Viaggio v) {
+		
+		Viaggio v2 = findViaggio(v.getId());
+		
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.remove(v2);
+			em.getTransaction().commit();
+			System.out.println("Viaggio eliminato correttamente");
+		} catch (Exception e) {
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			System.out.println("Errore nell'eliminazione del viaggio");
+		} finally {
+			em.close();
+		}
+	}
+
+	// Metodi custom JPQL 
+	
+	public static Abbonamento findAbbonamentoTramiteTessera(Tessera i) {
 		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try { 
@@ -148,10 +755,11 @@ public class TransportDAO implements I_metodi{
 			em.close();
 		}
 	}
-	public static List<Convalida> findConvalida(Veicolo v) {
+	public static List<Convalida> findConvalidaTramiteVeicolo(Veicolo v) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try { 
 			Query querySelect = em.createQuery("SELECT c FROM Convalida c WHERE c.convalidato_su =" + v.getId_veicolo());
+			@SuppressWarnings("unchecked")
 			List<Convalida> resList = querySelect.getResultList();
 			return resList;
 		} catch (Exception ex) {
@@ -180,6 +788,7 @@ public class TransportDAO implements I_metodi{
 		return q.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Titolo_di_Viaggio> findEmessiInData(LocalDate dataUno, LocalDate dataDue) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("Titolo.emessiInData");
@@ -189,88 +798,14 @@ public class TransportDAO implements I_metodi{
 	}
 
 	// METODI PER LA GESTIONE DEL PARCO MEZZI
-	
-	public void salvaMezzo(Veicolo v) {
-		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(v);
-			em.getTransaction().commit();
-			System.out.println("Veicolo inserito correttamente");
-		} catch (Exception e) {
-			e.printStackTrace();
-			em.getTransaction().rollback();
-			System.out.println("Errore nell'inserimento del veicolo");
-		} finally {
-			em.close();
-		}
-	}
-	
-	public void salvaManutenzione(Veicolo v, Manutenzione m) {
-		m.setId_veicolo(v);
-		v.checkStatus(m);
-		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-		try {
-			em.getTransaction().begin();
-			em.persist(m);
-			em.merge(v);
-			em.getTransaction().commit();
-			System.out.println("Manutenzione veicolo inserita correttamente");
-		} catch (Exception e) {
-			e.printStackTrace();
-			em.getTransaction().rollback();
-			System.out.println("Errore nell'inserimento della manutenzione del veicolo");
-		} finally {
-			em.close();
-		}
-	}
-	
-		public void salvaConvalida(Convalida c) {
-			if (c.getBiglietto().isValido()) {
-				Biglietto b = c.getBiglietto();
-			b.setValido(false);
-			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				em.getTransaction().begin();
-				em.persist(c);
-				em.merge(b);
-				em.getTransaction().commit();
-				System.out.println("Convalida biglietto effetuata correttamente");
-			} catch (Exception e) {
-				e.printStackTrace();
-				em.getTransaction().rollback();
-				System.out.println("Errore nella convalida del biglietto");
-			} finally {
-				em.close();
-			}
-			} else {
-				System.out.println("Biglietto già convalidato, rivolgiti ad un rivenditore per acquistarne un nuovo");
-			}
-		}
+		
+		@SuppressWarnings("unchecked")
 		public List<Convalida> findConvalidatiInData(LocalDate dataUno, LocalDate dataDue) {
 			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 			Query q = em.createNamedQuery("Convalide.emesseInData");
 			q.setParameter("data1", dataUno);
 			q.setParameter("data2", dataDue);
 			return q.getResultList();
-		}
-		
-		public void salvaTratta(Tratta tr, Veicolo v) {
-			v.setTappa_assegnata(tr);
-			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				em.getTransaction().begin();
-				em.merge(v);
-				em.persist(tr);
-				em.getTransaction().commit();
-				System.out.println("Tratta inserita correttamente");
-			} catch (Exception e) {
-				e.printStackTrace();
-				em.getTransaction().rollback();
-				System.out.println("Errore nell'inserimento della tratta");
-			} finally {
-				em.close();
-			}
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -281,22 +816,7 @@ public class TransportDAO implements I_metodi{
 		}
 		
 		
-		public void salvaViaggio(Viaggio route, Veicolo v) {
-			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-			try {
-				em.getTransaction().begin();
-				em.merge(v);
-				em.persist(route);
-				em.getTransaction().commit();
-				System.out.println("Tratta inserita correttamente");
-			} catch (Exception e) {
-				e.printStackTrace();
-				em.getTransaction().rollback();
-				System.out.println("Errore nell'inserimento della tratta");
-			} finally {
-				em.close();
-			}
-		}
+		
 
 		
 		
