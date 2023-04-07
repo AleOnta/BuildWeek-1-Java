@@ -546,12 +546,11 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(VenditaBiglietto r) {
 		
-		VenditaBiglietto r2 = findEmittente(r.getId_rivenditore());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			EntityTransaction transaction = em.getTransaction();
 			transaction.begin();
+			VenditaBiglietto r2 = em.find(VenditaBiglietto.class, r.getId_rivenditore());
 			em.remove(r2);
 			transaction.commit();
 			System.out.println("Eliminazione dell'emittente eseguita correttamente");
@@ -566,12 +565,11 @@ public class TransportDAO implements I_metodi{
 
 	public void eliminaEntita(Utente u) {
 		
-		Utente u2 = findUtente(u.getId());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			EntityTransaction transaction = em.getTransaction();
 			transaction.begin();
+			Utente u2 = em.find(Utente.class, u.getId());
 			em.remove(u2);
 			transaction.commit();
 			System.out.println("Utente eliminato correttamente");
@@ -586,11 +584,10 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(Tessera t) {
 		
-		Tessera t2 = findTessera(t.getNumeroTessera());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Tessera t2 = em.find(Tessera.class, t.getNumeroTessera());
 			em.remove(t2);
 			em.getTransaction().commit();
 			System.out.println("Tessera eliminata correttamente");
@@ -604,12 +601,11 @@ public class TransportDAO implements I_metodi{
 	}
 	
 	public void eliminaEntita(Biglietto b) {
-		
-		Biglietto b2 = findBiglietto(b.getId());
-		
+
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Biglietto b2 = em.find(Biglietto.class, b.getId());
 			em.remove(b2);
 			em.getTransaction().commit();
 			System.out.println("Biglietto eliminato correttamente");
@@ -624,11 +620,10 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(Abbonamento a) {
 		
-		Abbonamento a2 = findAbbonamento(a.getId());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Abbonamento a2 = em.find(Abbonamento.class, a.getId());
 			em.remove(a2);
 			em.getTransaction().commit();
 			System.out.println("Abbonamento eliminato correttamente");
@@ -643,11 +638,10 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(Veicolo v) {
 		
-		Veicolo v2 = findVeicolo(v.getId_veicolo());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Veicolo v2 = em.find(Veicolo.class, v.getId_veicolo());
 			em.remove(v2);
 			em.getTransaction().commit();
 			System.out.println("Veicolo aggiornato correttamente");
@@ -662,13 +656,13 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(Manutenzione m) {
 		
-		Manutenzione m2 = findManutenzione(m.getId());
-		Veicolo v = m2.getId_veicolo();
-		v.setStatus(E_StatusVeicolo.IN_SERVIZIO);
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Veicolo v = m.getId_veicolo();
+			v.setStatus(E_StatusVeicolo.IN_SERVIZIO);
 			em.merge(v);
+			Manutenzione m2 = em.find(Manutenzione.class, m.getId());
 			em.remove(m2);
 			em.getTransaction().commit();
 			System.out.println("Manutenzione veicolo eliminata correttamente");
@@ -683,11 +677,10 @@ public class TransportDAO implements I_metodi{
 	
 	public void eliminaEntita(Convalida c) {
 		
-		Convalida c2 = findConvalida(c.getId_convalida());
-		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Convalida c2 = em.find(Convalida.class, c.getId_convalida());
 			em.remove(c2);
 			em.getTransaction().commit();
 			System.out.println("Convalida biglietto eliminata correttamente");
@@ -701,12 +694,11 @@ public class TransportDAO implements I_metodi{
 	}
 		
 	public void eliminaEntita(Tratta tr) {
-		
-		Tratta tr2 = findTratta(tr.getId());
-		
+
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Tratta tr2 = em.find(Tratta.class, tr.getId());
 			em.remove(tr2);
 			em.getTransaction().commit();
 			System.out.println("Tratta eliminata correttamente");
@@ -720,12 +712,11 @@ public class TransportDAO implements I_metodi{
 	}
 		
 	public void eliminaEmittente(Viaggio v) {
-		
-		Viaggio v2 = findViaggio(v.getId());
-		
+
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			Viaggio v2 = em.find(Viaggio.class, v.getId());
 			em.remove(v2);
 			em.getTransaction().commit();
 			System.out.println("Viaggio eliminato correttamente");
@@ -820,21 +811,28 @@ public class TransportDAO implements I_metodi{
 
 	// METODI PER LA GESTIONE DEL PARCO MEZZI
 		
-		@SuppressWarnings("unchecked")
-		public List<Convalida> findConvalidatiInData(LocalDate dataUno, LocalDate dataDue) {
-			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-			Query q = em.createNamedQuery("Convalide.emesseInData");
-			q.setParameter("data1", dataUno);
-			q.setParameter("data2", dataDue);
-			return q.getResultList();
-		}
+	@SuppressWarnings("unchecked")
+	public List<Convalida> findConvalidatiInData(LocalDate dataUno, LocalDate dataDue) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Convalide.emesseInData");
+		q.setParameter("data1", dataUno);
+		q.setParameter("data2", dataDue);
+		return q.getResultList();
+	}
 		
-		@SuppressWarnings("unchecked")
-		public List<Veicolo> trovaTuttiIVeicoli() {
-			EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
-			Query q = em.createNamedQuery("Veicoli.CercaTuttiIVeicoli");
-			return q.getResultList();
-		}
+	@SuppressWarnings("unchecked")
+	public List<Veicolo> trovaTuttiIVeicoli() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Veicoli.CercaTuttiIVeicoli");
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Utente> trovaTuttiUtenti() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("utenti.getAll");
+		return q.getResultList();
+	}
 		
 		
 		

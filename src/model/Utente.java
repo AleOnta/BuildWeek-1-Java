@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "utenti")
+@NamedQuery(name = "utenti.getAll", query = "SELECT u FROM Utente u")
 @NamedQuery(name = "utenti.findBiglietti", query = "SELECT b FROM Biglietto b")
 @NamedQuery(name = "utenti.findTessereUtente", query = "SELECT t FROM Tessera t WHERE t.utente_proprietario.id_user = :id")
 public class Utente {
