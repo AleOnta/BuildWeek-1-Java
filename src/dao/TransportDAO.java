@@ -644,11 +644,11 @@ public class TransportDAO implements I_metodi{
 			Veicolo v2 = em.find(Veicolo.class, v.getId_veicolo());
 			em.remove(v2);
 			em.getTransaction().commit();
-			System.out.println("Veicolo aggiornato correttamente");
+			System.out.println("Veicolo eliminato correttamente");
 		} catch (Exception e) {
 			e.printStackTrace();
 			em.getTransaction().rollback();
-			System.out.println("Errore nell'aggiornamento del veicolo");
+			System.out.println("Errore nell'eliminazione del veicolo");
 		} finally {
 			em.close();
 		}
@@ -857,7 +857,18 @@ public class TransportDAO implements I_metodi{
 		return q.getResultList();
 	}
 		
-		
+	@SuppressWarnings("unchecked")
+	public List<Tratta> trovaTutteLeTratte() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Tratte.CercaTutteLeTratte");
+		return q.getResultList();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Tratta> trovaTutteLeManutenzioni() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Manutenzioni.CercaTutteLeManutenzioni");
+		return q.getResultList();
+	}
 		
 
 		

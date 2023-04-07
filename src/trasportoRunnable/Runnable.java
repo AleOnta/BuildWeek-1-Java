@@ -2,10 +2,12 @@ package trasportoRunnable;
 
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 import dao.TransportDAO;
 import model.*;
+import model_parco_mezzi.*;
 
 
 public class Runnable {
@@ -214,6 +216,9 @@ public class Runnable {
 									}
 								}
 								
+								case 5 -> {
+									
+								}
 								
 							}
 						}
@@ -222,7 +227,282 @@ public class Runnable {
 				}
 				// GESTIONE PARCO MEZZI
 				case 3 -> {
+					System.out.println("Benvenuto nella gestione del parco mezzi, \n"
+							+ "1 - Gestisci i mezzi \n"
+							+ "2 - Gestisci le tratte \n"
+							+ "3 - Gestisci le manutenzioni \n");
+					int pickGestioneParcoMezzi = chiediIntero(1, 3);
 					
+					switch (pickGestioneParcoMezzi) {
+					case 1 -> {	
+							//						 GESTIONE MEZZI
+						System.out.println("Benvenuto nella gestione dei mezzi, \n"
+						+ "1 - Crea un mezzo \n"
+						+ "2 - Aggiona un mezzo \n"
+						+ "3 - Elimina un mezzo \n"
+						+ "4 - Mostra tutti i mezzi");
+						int pickGestioneMezzi = chiediIntero(1, 3);
+						switch(pickGestioneMezzi) {
+						// 								CREAZIONE MEZZO
+						case 1->{
+							Veicolo v = new Veicolo();
+							
+							System.out.println("Inserisci tipologia mezzo, \n"
+									+ "1 - Tram \n"
+									+ "2 - Autobus \n ");
+							int pickTipologiaMezzo = chiediIntero(1, 2);
+							if(pickTipologiaMezzo == 1) {
+								v.setTipologia(E_Veicolo.TRAM);
+							}else v.setTipologia(E_Veicolo.AUTOBUS);
+							System.out.println("Assegna un punto di partenza per la tratta \n");
+							Tratta tr = new Tratta();
+							
+							tr.setPunto_partenza(sc.next()+sc.nextLine());
+							
+							System.out.println("Assegna un capolinea alla tratta \n");
+							tr.setCapolinea(sc.nextLine());
+							
+							System.out.println("Assegna una percorrenza media della tratta \n");
+							System.out.println("Inserisci ore (un integer) \n");
+							int ora =sc.nextInt();
+							System.out.println("Inserisci minuti (un integer) \n");
+							int minuti = sc.nextInt();
+							tr.setMedia_percorrenza(LocalTime.of(ora, minuti));
+							TD.salvaEntita(v);
+							TD.salvaEntita(tr, v);
+						}case 2 ->{
+							// 								AGGIORNAMENTO MEZZO
+							System.out.println("Scegli il mezzo da aggiornare \n");
+							
+							 List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							 for (Veicolo v  : tuttiIVeicoli) {
+								 System.out.println(v);
+							 }
+							Long id = sc.nextLong();
+							Veicolo v = TD.findVeicolo(id);
+							System.out.println("Cosa desideri modificare \n"
+									+ "1 - Tipologia \n"
+									+ "2 - Status \n"
+									+ "3 - Capienza \n"
+									+ "4 - Tappa assegnata \n"
+									+ "5 - Tutto");
+							 int daModificareVeicolo= chiediIntero(1, 4);
+							 if (daModificareVeicolo == 1) {
+								 System.out.println("Inserisci tipologia mezzo, \n"
+											+ "1 - Tram \n"
+											+ "2 - Autobus \n ");
+								int pickTipologiaMezzo = chiediIntero(1, 2);
+								if(pickTipologiaMezzo == 1) {
+									  v.setTipologia(E_Veicolo.TRAM);
+								}else v.setTipologia(E_Veicolo.AUTOBUS);
+								TD.aggiornaEntita(v);
+								
+							 }else if(daModificareVeicolo== 2) {
+								 System.out.println("Inserisci status mezzo, \n"
+											+ "1 - In Servizio \n"
+											+ "2 - In Manutenzione \n ");
+									int pickStatusMezzo = chiediIntero(1, 2);
+									if(pickStatusMezzo == 1) {
+										  v.setStatus(E_StatusVeicolo.IN_SERVIZIO);
+									}else v.setStatus(E_StatusVeicolo.IN_MANUTENZIONE);
+									TD.aggiornaEntita(v);
+								 
+							 }else if(daModificareVeicolo == 3) {
+								 System.out.println("Seleziona la nuova capienza");
+								 v.setCapienza(sc.nextInt());
+								 TD.aggiornaEntita(v);
+							 }else if (daModificareVeicolo == 4) {
+								 System.out.println("Seleziona la tappa da assegnare ");
+								 List<Tratta> listTratte = TD.trovaTutteLeTratte();
+				                    for (Tratta tr : listTratte) {
+				                        System.out.println(tr);		                       
+				                    } Long id1 = sc.nextLong();
+			    					Tratta tr = TD.findTratta(id1);
+			    					v.setTappa_assegnata(tr);
+			    					TD.aggiornaEntita(v);
+							 }else if (daModificareVeicolo ==5){
+								 System.out.println("Inserisci tipologia mezzo, \n"
+											+ "1 - Tram \n"
+											+ "2 - Autobus \n ");
+								int pickTipologiaMezzo = chiediIntero(1, 2);
+								if(pickTipologiaMezzo == 1) {
+									  v.setTipologia(E_Veicolo.TRAM);
+								}else v.setTipologia(E_Veicolo.AUTOBUS);
+								 System.out.println("Inserisci status mezzo, \n"
+											+ "1 - In Servizio \n"
+											+ "2 - In Manutenzione \n ");
+									int pickStatusMezzo = chiediIntero(1, 2);
+									if(pickStatusMezzo == 1) {
+										  v.setStatus(E_StatusVeicolo.IN_SERVIZIO);
+									}else v.setStatus(E_StatusVeicolo.IN_MANUTENZIONE);
+									System.out.println("Inserisci capienza veicolo \n");
+									 v.setCapienza(sc.nextInt());
+									 System.out.println("Seleziona la tappa da assegnare ");
+									 List<Tratta> listTratte = TD.trovaTutteLeTratte();
+					                    for (Tratta tr1 : listTratte) {
+					                        System.out.println(tr1);}			                        			
+				                        Long id1 = sc.nextLong();
+				    					Tratta tr = TD.findTratta(id1);
+				    					v.setTappa_assegnata(tr);	
+				    					TD.aggiornaEntita(v);
+							 }	//									FINE AGGIORNAMENTO MEZZO
+							 
+							 
+							 
+							 //                  				ELIMINAZIONE MEZZO
+						} case 3 -> {
+							System.out.println("Seleziona il mezzo da eliminare ");
+							List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							for (Veicolo v : tuttiIVeicoli) {
+								System.out.println(v);
+							}
+							Long id = sc.nextLong();
+							Veicolo v = TD.findVeicolo(id);
+							
+							TD.eliminaEntita(v);
+							
+							
+						}case 4 ->{
+							System.out.println("Ecco la lista di tutti  i veicoli \n");
+							List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							for (Veicolo v : tuttiIVeicoli) {
+								System.out.println(v);
+							}
+						}													
+						} //  													FINE GESTIONE MEZZI
+						  
+					}
+					
+					case 2 -> {
+						// 														GESTIONE TRATTE
+						System.out.println("Benvenuto nella gestione delle tratte, \n"
+						+ "1 - Crea una tratta \n"
+						+ "2 - Aggiona una tratta \n"
+						+ "3 - Elimina una tratta \n"
+						+ "4 - Mostra tutte le Tappe \n");
+						int pickGestioneTratte = chiediIntero(1, 4);
+						switch (pickGestioneTratte) {
+						case 1 -> 
+						//    										 			CREAZIONE TRATTA
+						{System.out.println("Assegna un punto di partenza per la tratta \n");
+						Tratta tr = new Tratta();
+						
+						tr.setPunto_partenza(sc.next()+sc.nextLine());
+						
+						System.out.println("Assegna un capolinea alla tratta \n");
+						tr.setCapolinea(sc.nextLine());
+						
+						System.out.println("Assegna una percorrenza media della tratta \n");
+						System.out.println("Inserisci ore (un integer) \n");
+						int ora =sc.nextInt();
+						System.out.println("Inserisci minuti (un integer) \n");
+						int minuti = sc.nextInt();
+						tr.setMedia_percorrenza(LocalTime.of(ora, minuti));
+						System.out.println("Seleziona un mezzo da abbinare alla tratta creata \n");
+						
+						Veicolo v;
+						System.out.println(TD.trovaTuttiIVeicoli()); 
+						Long id = sc.nextLong();
+						v = TD.findVeicolo(id);
+						TD.salvaEntita(tr, v);
+						}
+						// 							MODIFICA TRATTA
+						case 2 ->{
+							Tratta tr ;
+							System.out.println("Seleziona una tratta \n");
+							List<Tratta> listTratte = TD.trovaTutteLeTratte();
+		                    for (Tratta tr1 : listTratte) {
+		                        System.out.println(tr1);
+		                    }
+							Long id = sc.nextLong();
+							tr = TD.findTratta(id);
+							System.out.println("Cosa desideri modificare \n"
+									+ "1 - Capolinea \n"
+									+ "2 - Punto di partenza \n"
+									+ "3 - Percorrenza Media \n"
+									+ "4 - Tutto \n");
+							 int daModificareTratta= chiediIntero(1, 4);
+							 if (daModificareTratta == 1) {
+								 tr.setCapolinea(sc.nextLine());
+								 
+							 }else if(daModificareTratta== 2) {
+								 tr.setPunto_partenza(sc.nextLine());
+								 
+							 }else if(daModificareTratta == 3) {
+								 System.out.println("Inserisci ore (un integer) \n");
+									int ora =sc.nextInt();
+									System.out.println("Inserisci minuti (un integer) \n");
+									int minuti = sc.nextInt();
+									tr.setMedia_percorrenza(LocalTime.of(ora, minuti));
+							 }else System.out.println("Assegna un punto di partenza per la tratta \n");
+								tr.setPunto_partenza(sc.next()+sc.nextLine());
+								
+								System.out.println("Assegna un capolinea alla tratta \n");
+								tr.setCapolinea(sc.nextLine());
+								
+								System.out.println("Assegna una percorrenza media della tratta \n");
+								System.out.println("Inserisci ore (un integer) \n");
+								int ora =sc.nextInt();
+								System.out.println("Inserisci minuti (un integer) \n");
+								int minuti = sc.nextInt();
+								tr.setMedia_percorrenza(LocalTime.of(ora, minuti));
+								TD.aggiornaEntita(tr);
+						}
+						//  								ELIMINAZIONE TRATTA
+						case 3 -> {System.out.println("Seleziona la tratta da eliminare");
+						List<Tratta> listTratte = TD.trovaTutteLeTratte();
+		                for (Tratta tr1 : listTratte) {
+		                    System.out.println(tr1);
+		                }
+		                Long id = sc.nextLong();
+		                Tratta tr = TD.findTratta(id);
+		                TD.eliminaEntita(tr);
+		                //													TUTTE LE TRATTE
+		                }case 4 ->{
+						System.out.println("Ecco tutte le tratte");
+						List<Tratta> listTratte = TD.trovaTutteLeTratte();
+		                for (Tratta tr1 : listTratte) {
+		                    System.out.println(tr1);
+		                }
+					}	
+					}
+						}
+						//										MANUTENZIONI	
+					case 3 -> {
+						System.out.println("Benvenuto nella gestione delle manutenzioni, \n"
+						+ "1 - Crea una manutenzione \n"
+						+ "2 - Aggiona una manutenzione \n"
+						+ "3 - Elimina una manutenzione \n");
+						int pickGestioneManutenzioni = chiediIntero(1, 3);
+						if (pickGestioneManutenzioni == 1) {
+							Manutenzione m = new Manutenzione();
+							System.out.println("Seleziona il veicolo da mandare in manutenzione");
+							List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							Long id = sc.nextLong();
+							Veicolo v  = TD.findVeicolo(id);
+							List <Manutenzione>manutenzioniVeicolo = v.getManutenzioni();
+							System.out.println("Scegli data di inizio della manutenzione");
+							System.out.println("Scegli anno");
+							int anno = sc.nextInt();
+							System.out.println("Scegli mese");
+							int mese = sc.nextInt();
+							System.out.println("Scegli giorno");
+							int giorno = sc.nextInt();
+							LocalDate inizio = LocalDate.of(anno, mese, giorno);
+							m.setInizio(inizio);
+							System.out.println("Scegli data di fine della manutenzione");
+							System.out.println("Scegli anno");
+							int anno1 = sc.nextInt();
+							System.out.println("Scegli mese");
+							int mese1 = sc.nextInt();
+							System.out.println("Scegli giorno");
+							int giorno1 = sc.nextInt();
+							LocalDate fine = LocalDate.of(anno1, mese1, giorno1);
+							TD.salvaEntita(v, m);
+						}
+					}
+							
+					}
 				}
 				}
 			}

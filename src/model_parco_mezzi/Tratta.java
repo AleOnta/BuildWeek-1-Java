@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import javax.persistence.*;
 @Entity
 @Table (name = "tratte")
+@NamedQuery(name = "Tratte.CercaTutteLeTratte", query = "SELECT tr FROM Tratta tr")
 public class Tratta {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

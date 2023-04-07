@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_titolo", discriminatorType = DiscriminatorType.STRING)
 @NamedQuery(name = "Titolo.emessiInData", query = "SELECT t FROM Titolo_di_Viaggio t WHERE t.dataEmissione BETWEEN :data1 AND :data2")
-@NamedQuery(name = "Biglietto.emessiInData", query = "SELECT b FROM Biglietto t WHERE b.dataEmissione BETWEEN :data1 AND :data2")
+//@NamedQuery(name = "Biglietto.emessiInData", query = "SELECT b FROM Biglietto t WHERE b.dataEmissione BETWEEN :data1 AND :data2")
 public class Titolo_di_Viaggio {
 	
 	@Id
