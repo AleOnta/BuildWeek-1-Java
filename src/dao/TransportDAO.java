@@ -870,7 +870,12 @@ public class TransportDAO implements I_metodi{
 		Query q = em.createNamedQuery("Manutenzioni.CercaTutteLeManutenzioni");
 		return q.getResultList();
 	}
-		
+	@SuppressWarnings("unchecked")
+	public List<Titolo_di_Viaggio> trovaTuttiITitoliDiViaggio() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Titoli.tuttiITitoliDiViaggio");
+		return q.getResultList();
+	}
 
 		
 		

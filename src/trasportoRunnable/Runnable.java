@@ -200,11 +200,19 @@ public class Runnable {
 										System.out.println(b);
 									}
 								}								
-								case 5 -> {									
+								case 5 -> {						
 								}								
 							}
 						}
-					}					
+						case 2 ->{}
+						case 3 ->{}
+						case 4 ->{
+							System.out.println("Ecco tutti i titoli di viaggio");
+							List <Titolo_di_Viaggio> listaTitoliDiViaggio = TD.trovaTuttiITitoliDiViaggio();
+							for (Titolo_di_Viaggio t :listaTitoliDiViaggio)
+								System.out.println(t);
+						}
+					}				
 				}
 				// GESTIONE PARCO MEZZI
 				case 3 -> {
