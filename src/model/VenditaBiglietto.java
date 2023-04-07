@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table (name="rivenditori")
 @Inheritance (strategy= InheritanceType.SINGLE_TABLE)
+@NamedQuery(name = "rivenditori.findAll", query = "SELECT v FROM VenditaBiglietto v")
 public class VenditaBiglietto implements Serializable {
 	
 	@Id

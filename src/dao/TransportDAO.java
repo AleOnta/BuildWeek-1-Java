@@ -201,11 +201,11 @@ public class TransportDAO implements I_metodi{
 			em.merge(v);
 			em.persist(route);
 			em.getTransaction().commit();
-			System.out.println("Tratta inserita correttamente");
+			System.out.println("Viaggio inserito correttamente");
 		} catch (Exception e) {
 			e.printStackTrace();
 			em.getTransaction().rollback();
-			System.out.println("Errore nell'inserimento della tratta");
+			System.out.println("Errore nell'inserimento del viaggio");
 		} finally {
 			em.close();
 		}
@@ -750,6 +750,14 @@ public class TransportDAO implements I_metodi{
 		return resList;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Biglietto> trovaBigliettiUtente2(Utente u) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("utenti.findBigliettiUtente");
+		q.setParameter("param", u);
+		return q.getResultList();
+	}
+	
 	
 	public static Abbonamento findAbbonamentoTramiteTessera(Tessera i) {
 		
@@ -808,6 +816,15 @@ public class TransportDAO implements I_metodi{
 		q.setParameter("data2", dataDue);
 		return q.getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Biglietto> findBigliettiEmessiInData(LocalDate dataUno, LocalDate dataDue) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Biglietto.emessiInData");
+		q.setParameter("data1", dataUno);
+		q.setParameter("data2", dataDue);
+		return q.getResultList();
+	}
 
 	// METODI PER LA GESTIONE DEL PARCO MEZZI
 		
@@ -831,6 +848,12 @@ public class TransportDAO implements I_metodi{
 	public List<Utente> trovaTuttiUtenti() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("utenti.getAll");
+		return q.getResultList();
+	}
+	
+	public List<VenditaBiglietto> trovaTuttiRivenditori() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("rivenditori.findAll");
 		return q.getResultList();
 	}
 		

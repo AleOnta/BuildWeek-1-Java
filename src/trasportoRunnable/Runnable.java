@@ -1,6 +1,7 @@
 package trasportoRunnable;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 import dao.TransportDAO;
@@ -114,6 +115,109 @@ public class Runnable {
 				}
 				// GESTIONE TITOLI DI VIAGGIO
 				case 2 -> {
+					System.out.println("Benvenuto nella gestione dei Titoli di viaggio, \n"
+							+ "1 - Lavora con i biglietti \n"
+							+ "2 - Lavora con gli abbonamenti \n"
+							+ "3 - Lavora con le tessere \n"
+							+ "4 - Stampa tutti i Titoli di viaggio \n"
+							+ "5 - Stampa Titoli emessi in un determinato periodo \n");
+					
+					int pickGestioneTitoli = chiediIntero(1, 5);
+					
+					switch (pickGestioneTitoli) {
+						case 1 -> {
+							System.out.println("Benvenuto nella sezione 'biglietti', cosa vuoi fare? \n"
+									+ "1 - Compra un nuovo biglietto \n"
+									+ "2 - Elimina un biglietto \n"
+									+ "3 - Stampa biglietti di un utente \n"
+									+ "4 - Stampa biglietti emessi in un determinato periodo di tempo \n"
+									+ "5 - Stampa tutti i biglietti \n"
+									+ "6 - Stampa solo i biglietti validi \n");
+							
+							int pickOperazioneBiglietto = chiediIntero(1, 8);
+							switch (pickOperazioneBiglietto) {
+								case 1 -> {
+									System.out.println("Tramite quale rivenditore vorresti acquistare il biglietto?");
+									
+									List<VenditaBiglietto> listRivenditori = TD.trovaTuttiRivenditori();
+									for (VenditaBiglietto r : listRivenditori) {
+										System.out.println(r);
+									}
+									
+									System.out.println("\nIndica il rivenditore attraverso il corrispettivo ID");
+									int daUtilizzare = chiediIntero(1, listRivenditori.size());
+									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);
+									
+									System.out.println("Per quale utente vuoi acquistare il biglietto? \n");
+									
+									List<Utente> listUtenti = TD.trovaTuttiUtenti();
+									for (Utente u : listUtenti) {
+										System.out.println(u);
+									}
+									System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
+									Long id_utente = (long)chiediIntero(1, listUtenti.size());
+									Utente u = TD.findUtente(id_utente);
+									
+									Biglietto b = new Biglietto();
+									b.setEmittente(r);
+									TD.salvaEntita(b, u);
+								}
+								
+								case 2 -> {
+									System.out.println("Quale biglietto vorresti eliminare?");
+									
+									List<Biglietto> listBiglietti = TD.trovaTuttiBiglietti();
+									for (Biglietto b : listBiglietti) {
+										System.out.println(b);
+									}
+									
+									System.out.println("\nIndica il biglietto attraverso il corrispettivo ID");
+									Long id_biglietto = (long)chiediIntero(1, listBiglietti.size());
+									
+									Biglietto b = TD.findBiglietto(id_biglietto);
+									TD.eliminaEntita(b);
+								}
+								
+								case 3 -> {
+									System.out.println("Di quale utente vorresti stampare i biglietti?");
+									
+									List<Utente> listUtenti = TD.trovaTuttiUtenti();
+									for (Utente u : listUtenti) {
+										System.out.println(u);
+									}
+									
+									System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
+									Long id_utente = (long)chiediIntero(1, listUtenti.size());
+									
+									Utente u = TD.findUtente(id_utente);
+									
+									System.out.println("Ecco la lista di biglietti dell'utente: \n");
+									List<Biglietto> bigliettiUtente = TD.trovaBigliettiUtente2(u);
+									
+									for (Biglietto b : bigliettiUtente) {
+										System.out.println(b);
+									}
+									System.out.println("\n\n");
+								}
+								case 4 -> { // FIX PATH
+									System.out.println("Okay, inserisci le date seguendo il seguente formato: yyyy mm dd \n"
+														+ "separandoli tramite uno spazio");
+									
+									System.out.println("Cerca a partire da:");
+									LocalDate dataUno = chiediData("inizio ricerca");
+									LocalDate dataDue = chiediData("fine ricerca");
+									
+									List<Biglietto> listBiglietti = TD.findBigliettiEmessiInData(dataUno, dataDue);
+									
+									for (Biglietto b : listBiglietti) {
+										System.out.println(b);
+									}
+								}
+								
+								
+							}
+						}
+					}
 					
 				}
 				// GESTIONE PARCO MEZZI
@@ -156,6 +260,16 @@ public class Runnable {
 			}
 		}
 		return pick;
+	}
+	
+	public static LocalDate chiediData(String tipoData) {
+		System.out.println("inserisci la data di " + tipoData);
+		String dataInString = sc.next() + sc.nextLine();
+		String[] dataInArray = dataInString.split(" ");
+		int year = Integer.parseInt(dataInArray[0]);
+		int month = Integer.parseInt(dataInArray[1]);
+		int day = Integer.parseInt(dataInArray[2]);
+		return LocalDate.of(year, month, day);
 	}
 	
 }

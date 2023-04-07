@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-
 public class Biglietto extends Titolo_di_Viaggio {
 
 	@ManyToOne(cascade = CascadeType.REFRESH)
