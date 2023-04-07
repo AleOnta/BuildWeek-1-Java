@@ -31,6 +31,7 @@ public class Runnable {
 			switch (pick) {
 				case 0 -> {
 					System.out.println("Chiusura del gestionale");
+					isRunning = false;
 					break;
 				}
 				// GESTIONE UTENTI
@@ -134,24 +135,19 @@ public class Runnable {
 									+ "3 - Stampa biglietti di un utente \n"
 									+ "4 - Stampa biglietti emessi in un determinato periodo di tempo \n"
 									+ "5 - Stampa tutti i biglietti \n"
-									+ "6 - Stampa solo i biglietti validi \n");
-							
+									+ "6 - Stampa solo i biglietti validi \n");							
 							int pickOperazioneBiglietto = chiediIntero(1, 8);
 							switch (pickOperazioneBiglietto) {
 								case 1 -> {
-									System.out.println("Tramite quale rivenditore vorresti acquistare il biglietto?");
-									
+									System.out.println("Tramite quale rivenditore vorresti acquistare il biglietto?");									
 									List<VenditaBiglietto> listRivenditori = TD.trovaTuttiRivenditori();
 									for (VenditaBiglietto r : listRivenditori) {
 										System.out.println(r);
-									}
-									
+									}									
 									System.out.println("\nIndica il rivenditore attraverso il corrispettivo ID");
 									int daUtilizzare = chiediIntero(1, listRivenditori.size());
-									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);
-									
-									System.out.println("Per quale utente vuoi acquistare il biglietto? \n");
-									
+									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);									
+									System.out.println("Per quale utente vuoi acquistare il biglietto? \n");									
 									List<Utente> listUtenti = TD.trovaTuttiUtenti();
 									for (Utente u : listUtenti) {
 										System.out.println(u);
@@ -163,39 +159,29 @@ public class Runnable {
 									Biglietto b = new Biglietto();
 									b.setEmittente(r);
 									TD.salvaEntita(b, u);
-								}
-								
+								}								
 								case 2 -> {
-									System.out.println("Quale biglietto vorresti eliminare?");
-									
+									System.out.println("Quale biglietto vorresti eliminare?");									
 									List<Biglietto> listBiglietti = TD.trovaTuttiBiglietti();
 									for (Biglietto b : listBiglietti) {
 										System.out.println(b);
-									}
-									
+									}									
 									System.out.println("\nIndica il biglietto attraverso il corrispettivo ID");
-									Long id_biglietto = (long)chiediIntero(1, listBiglietti.size());
-									
+									Long id_biglietto = (long)chiediIntero(1, listBiglietti.size());									
 									Biglietto b = TD.findBiglietto(id_biglietto);
 									TD.eliminaEntita(b);
-								}
-								
+								}								
 								case 3 -> {
-									System.out.println("Di quale utente vorresti stampare i biglietti?");
-									
+									System.out.println("Di quale utente vorresti stampare i biglietti?");									
 									List<Utente> listUtenti = TD.trovaTuttiUtenti();
 									for (Utente u : listUtenti) {
 										System.out.println(u);
-									}
-									
+									}									
 									System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
-									Long id_utente = (long)chiediIntero(1, listUtenti.size());
-									
-									Utente u = TD.findUtente(id_utente);
-									
+									Long id_utente = (long)chiediIntero(1, listUtenti.size());									
+									Utente u = TD.findUtente(id_utente);									
 									System.out.println("Ecco la lista di biglietti dell'utente: \n");
-									List<Biglietto> bigliettiUtente = TD.trovaBigliettiUtente2(u);
-									
+									List<Biglietto> bigliettiUtente = TD.trovaBigliettiUtente2(u);									
 									for (Biglietto b : bigliettiUtente) {
 										System.out.println(b);
 									}
@@ -203,8 +189,7 @@ public class Runnable {
 								}
 								case 4 -> { // FIX PATH
 									System.out.println("Okay, inserisci le date seguendo il seguente formato: yyyy mm dd \n"
-														+ "separandoli tramite uno spazio");
-									
+														+ "separandoli tramite uno spazio");									
 									System.out.println("Cerca a partire da:");
 									LocalDate dataUno = chiediData("inizio ricerca");
 									LocalDate dataDue = chiediData("fine ricerca");
@@ -214,16 +199,12 @@ public class Runnable {
 									for (Biglietto b : listBiglietti) {
 										System.out.println(b);
 									}
-								}
-								
-								case 5 -> {
-									
-								}
-								
+								}								
+								case 5 -> {									
+								}								
 							}
 						}
-					}
-					
+					}					
 				}
 				// GESTIONE PARCO MEZZI
 				case 3 -> {
@@ -241,7 +222,7 @@ public class Runnable {
 						+ "2 - Aggiona un mezzo \n"
 						+ "3 - Elimina un mezzo \n"
 						+ "4 - Mostra tutti i mezzi");
-						int pickGestioneMezzi = chiediIntero(1, 3);
+						int pickGestioneMezzi = chiediIntero(1, 4);
 						switch(pickGestioneMezzi) {
 						// 								CREAZIONE MEZZO
 						case 1->{
@@ -255,13 +236,10 @@ public class Runnable {
 								v.setTipologia(E_Veicolo.TRAM);
 							}else v.setTipologia(E_Veicolo.AUTOBUS);
 							System.out.println("Assegna un punto di partenza per la tratta \n");
-							Tratta tr = new Tratta();
-							
-							tr.setPunto_partenza(sc.next()+sc.nextLine());
-							
+							Tratta tr = new Tratta();							
+							tr.setPunto_partenza(sc.next()+sc.nextLine());							
 							System.out.println("Assegna un capolinea alla tratta \n");
 							tr.setCapolinea(sc.nextLine());
-							
 							System.out.println("Assegna una percorrenza media della tratta \n");
 							System.out.println("Inserisci ore (un integer) \n");
 							int ora =sc.nextInt();
@@ -474,33 +452,57 @@ public class Runnable {
 						+ "2 - Aggiona una manutenzione \n"
 						+ "3 - Elimina una manutenzione \n");
 						int pickGestioneManutenzioni = chiediIntero(1, 3);
+						// 													CREAZIONE MANUTENZIONE
 						if (pickGestioneManutenzioni == 1) {
 							Manutenzione m = new Manutenzione();
 							System.out.println("Seleziona il veicolo da mandare in manutenzione");
 							List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							for (Veicolo v : tuttiIVeicoli) {
+			                    System.out.println(v);
+			                }
 							Long id = sc.nextLong();
 							Veicolo v  = TD.findVeicolo(id);
 							List <Manutenzione>manutenzioniVeicolo = v.getManutenzioni();
-							System.out.println("Scegli data di inizio della manutenzione");
-							System.out.println("Scegli anno");
-							int anno = sc.nextInt();
-							System.out.println("Scegli mese");
-							int mese = sc.nextInt();
-							System.out.println("Scegli giorno");
-							int giorno = sc.nextInt();
-							LocalDate inizio = LocalDate.of(anno, mese, giorno);
+							System.out.println("Inserisci la data col seguente format YYYY MM DD");
+						
+							LocalDate inizio = chiediData("Inizio");
 							m.setInizio(inizio);
-							System.out.println("Scegli data di fine della manutenzione");
-							System.out.println("Scegli anno");
-							int anno1 = sc.nextInt();
-							System.out.println("Scegli mese");
-							int mese1 = sc.nextInt();
-							System.out.println("Scegli giorno");
-							int giorno1 = sc.nextInt();
-							LocalDate fine = LocalDate.of(anno1, mese1, giorno1);
+							System.out.println("Scegli data di fine della manutenzione col seguente format YYYY MM DD");
+							LocalDate fine = chiediData("Fine");
+							m.setFine(fine);
 							TD.salvaEntita(v, m);
-						}
+							// 													MODIFICA MANUTENZIONE
+						}else if (pickGestioneManutenzioni == 2) {
+							Manutenzione m = new Manutenzione();
+							System.out.println("Seleziona la manutenzione da modificare");
+							List <Manutenzione>manutenzioniVeicolo = TD.trovaTutteLeManutenzioni();
+							for (Manutenzione m1 : manutenzioniVeicolo) {
+			                    System.out.println(m1);
+			                }
+							Long id = sc.nextLong();
+							
+							m = TD.findManutenzione(id);
+							System.out.println("Inserisci la data col seguente format YYYY MM DD");
+							LocalDate inizio = chiediData("Inizio");
+							m.setInizio(inizio);
+							System.out.println("Scegli data di fine della manutenzione col seguente format YYYY MM DD");
+							LocalDate fine = chiediData("Fine");
+							m.setFine(fine);
+							TD.aggiornaEntita(m);
+							// 												ELIMINA MANUTENZIONE
+					}else if (pickGestioneManutenzioni == 3) {
+						Manutenzione m;
+						System.out.println("Seleziona la manutenzione da modificare");
+						List <Manutenzione>manutenzioniVeicolo = TD.trovaTutteLeManutenzioni();
+						for (Manutenzione m1 : manutenzioniVeicolo) {
+		                    System.out.println(m1);
+		                }
+						Long id = sc.nextLong();
+						
+						m = TD.findManutenzione(id);
+						TD.eliminaEntita(m);
 					}
+					} 
 							
 					}
 				}
