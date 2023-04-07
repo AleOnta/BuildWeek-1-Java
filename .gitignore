@@ -1,3 +1,6 @@
 
+target/classes/META-INF/persistence.xml
+src/META-INF/persistence.xml
 target/classes/META-INF/MANIFEST.MF
-target/classes/META-INF/maven/BuildWeek-1-Java/BuildWeek-1-Java/pom.properties
+*.class
+*.class

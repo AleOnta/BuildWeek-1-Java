@@ -1,39 +1,46 @@
 package model;
 
 import java.util.List;
-
+import java.util.ArrayList;
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "utenti")
+@Entity
+@Table(name = "utenti")
+@NamedQuery(name = "utenti.getAll", query = "SELECT u FROM Utente u")
+@NamedQuery(name = "utenti.findBiglietti", query = "SELECT b FROM Biglietto b")
+@NamedQuery(name = "utenti.findBigliettiUtente", query = "SELECT b FROM Biglietto b WHERE b.utente_prop = :param")
+@NamedQuery(name = "utenti.findTessereUtente", query = "SELECT t FROM Tessera t WHERE t.utente_proprietario.id_user = :id")
 public class Utente {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "id_user")
+	private Long id_user;
+	
 	@Column(nullable = false)
 	private String nome;
+	
 	@Column(nullable = false)
 	private String cognome;
-	@OneToMany
-	@Column(name = "id_tessera", nullable = true)
-	private Tessera tesseraUtente;
-	@OneToMany
-	private List<Biglietto> biglietti;
+	
+	@OneToMany(mappedBy = "utente_proprietario", cascade = CascadeType.ALL)
+	private List<Tessera> tessera_utente = new ArrayList<Tessera>();
+	
+	@OneToMany(mappedBy="utente_prop", cascade = CascadeType.ALL)
+	private List<Biglietto> biglietti = new ArrayList<Biglietto>();
+	
 	
 	public Utente() {
-		
 	}
-
-	public Utente(String nome, String cognome, Tessera tesseraUtente) {
+	
+	public Utente(String nome, String cognome) {
 		super();
 		this.nome = nome;
 		this.cognome = cognome;
-		this.tesseraUtente = tesseraUtente;
-	}
+	};
 
 	public Long getId() {
-		return id;
+		return id_user;
 	}
 	
 	public String getNome() {
@@ -52,13 +59,13 @@ public class Utente {
 		this.cognome = cognome;
 	}
 
-	public Tessera getTesseraUtente() {
-		return tesseraUtente;
+	public List<Tessera> getTessereUtente() {
+		return tessera_utente;
 	}
 
 	public void setTesseraUtente(Tessera tesseraUtente) {
-		this.tesseraUtente = tesseraUtente;
-	}
+        this.tessera_utente.add(tesseraUtente);
+    }
 
 	public List<Biglietto> getBiglietti() {
 		return biglietti;
@@ -68,10 +75,13 @@ public class Utente {
 		this.biglietti = biglietti;
 	}
 
+	public void printBiglietti() {
+			System.out.println(biglietti);
+	}
+	
 	@Override
 	public String toString() {
-		return "UTENTE --> id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", tessera-utente=" + tesseraUtente
-				+ ", biglietti=" + biglietti + "]";
+		return "UTENTE --> id=" + id_user + ", n=" + nome + ", c=" + cognome + ", " + "]";
 	}
 	
 	

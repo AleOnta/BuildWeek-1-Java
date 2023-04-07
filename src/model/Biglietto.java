@@ -1,68 +1,87 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.*;
 
-public class Biglietto {
+@Entity
+public class Biglietto extends Titolo_di_Viaggio {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "biglietto_id")
-	private Long bigliettoId;
-	@ManyToOne
-	private Utente utente;
-	private LocalDate dataEmissione;
-	// ho messo string perchè non sapevo come volessi gestire le classi di vendita
-	private String enteEmittente;
-	@Column(nullable = true)
-	private LocalDate utilizzo;
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "utente_id")
+	private Utente utente_prop;
+	@OneToMany(mappedBy = "biglietto", cascade = CascadeType.ALL)
+	private List<Convalida> utilizzo;
 	private boolean valido;
 	
 	public Biglietto() {
 		super();
 	}
 	
-	public Biglietto(Utente utente, LocalDate dataEmissione, String enteEmittente) {
-		super();
-		this.utente = utente;
-		this.dataEmissione = dataEmissione;
-		this.enteEmittente = enteEmittente;
+	public Biglietto(VenditaBiglietto emittente, LocalDate dataEmissione, Utente utente) {
+		super(emittente, dataEmissione);
+		this.utente_prop = utente;
 	}
-	
+
 	public Utente getUtente() {
-		return utente;
+		return utente_prop;
 	}
-	
+
 	public void setUtente(Utente utente) {
-		this.utente = utente;
+		this.utente_prop = utente;
 	}
+
 	
+	public String getUtilizzo() {
+		if (utilizzo.size() > 0) {
+			return utilizzo.get(0).getId_convalida().toString();
+		} else {
+			return "non convalidato";
+		}
+	}
+
+	public boolean isValido() {
+		return valido;
+	}
+
+	public void setValido(boolean valido) {
+		this.valido = valido;
+	}
+
+	@Override
+	public VenditaBiglietto getEmittente() {
+		// TODO Auto-generated method stub
+		return super.getEmittente();
+	}
+
+	@Override
+	public void setEmittente(VenditaBiglietto emittente) {
+		// TODO Auto-generated method stub
+		super.setEmittente(emittente);
+	}
+
+	@Override
 	public LocalDate getDataEmissione() {
-		return dataEmissione;
+		// TODO Auto-generated method stub
+		return super.getDataEmissione();
 	}
+
+	@Override
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return super.getId();
+	}
+
+	@Override
+	public String toString() {
+		return "Biglietto [Id = " + getId() + ", idUtenteProprietario = " + utente_prop.getId() + ", Emittente = " + getEmittente() 
+		+ ", DataEmissione = " + getDataEmissione() + ", validità = " + valido + ", convalida = " + getUtilizzo() + "]";
+	}
+
 	
-	public void setDataEmissione(LocalDate dataEmissione) {
-		this.dataEmissione = dataEmissione;
-	}
+
 	
-	public String getEnteEmittente() {
-		return enteEmittente;
-	}
 	
-	public void setEnteEmittente(String enteEmittente) {
-		this.enteEmittente = enteEmittente;
-	}
 	
-	public LocalDate getUtilizzo() {
-		return utilizzo;
-	}
-	
-	public void setUtilizzo(LocalDate utilizzo) {
-		this.utilizzo = utilizzo;
-	}
-	
-	public Long getBigliettoId() {
-		return bigliettoId;
-	}
 }

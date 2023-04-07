@@ -1,38 +1,45 @@
 package model;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
-//@Entity
-//@Table(name = "tessere")
+@Entity
+@Table(name = "tessere")
+@NamedQuery(name = "Tessera.findAll", query = "SELECT t FROM Tessera t")
 public class Tessera {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long numeroTessera;
+	private Long numero_tessera;
+	private LocalDate iscrizione;
 	private LocalDate scadenza;
-	@OneToOne
-	@Column(name = "id_user")
-	private Utente utenteProprietario;
-	
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "id_utente")
+	private Utente utente_proprietario;
+	@OneToMany(mappedBy = "tessera_proprietario", cascade = CascadeType.ALL)
+	private List<Abbonamento> abbonamenti = new ArrayList<Abbonamento>();
 	
 	public Tessera() {
 		super();
+		this.iscrizione = LocalDate.now();
+		this.scadenza=LocalDate.now().plusYears(1);
 	}
 
-	public Tessera(Utente utenteProprietario, LocalDate scadenza) {
+	public Tessera(Utente utenteProprietario) {
 		super();
-		this.utenteProprietario = utenteProprietario;
-		this.scadenza = LocalDate.now().plusYears(1);
+		this.utente_proprietario = utenteProprietario;
+		this.iscrizione = LocalDate.now();
+		this.scadenza=LocalDate.now().plusYears(1);
 	}
 
 	public Utente getUtenteProprietario() {
-		return utenteProprietario;
+		return utente_proprietario;
 	}
 
 	public void setUtenteProprietario(Utente utenteProprietario) {
-		this.utenteProprietario = utenteProprietario;
+		this.utente_proprietario = utenteProprietario;
 	}
 
 	public LocalDate getScadenza() {
@@ -44,13 +51,23 @@ public class Tessera {
 	}
 
 	public Long getNumeroTessera() {
-		return numeroTessera;
+		return numero_tessera;
+	}
+	
+	public String getAbbonamenti() {
+		if (abbonamenti.size() < 1) {
+			return "Non ci sono abbonamenti legati a questa tessera.";
+		} else {
+			return abbonamenti.get(0).toString();
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "TESSERA --> numero-tessera=" + numeroTessera + ", utente-proprietario=" + utenteProprietario + ", scadenza="
-				+ scadenza;
+		return "Tessera [idTessera = " + numero_tessera + ", idUtente = " + utente_proprietario.getId() + ", iscrizione = " + iscrizione + ", scadenza = " + scadenza
+				+ "]";
 	}
+
+	
 	
 }
