@@ -72,7 +72,7 @@ public class Runnable {
 							}
 							
 							System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
-							Long id_utente = (long)chiediIntero(1, listUtenti.size());
+							Long id_utente = (long)chiediIntero(1, 100);
 							
 							Utente u2 = TD.findUtente(id_utente);
 							
@@ -109,7 +109,7 @@ public class Runnable {
 							}
 							
 							System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
-							Long id_utente = (long)chiediIntero(1, listUtenti.size());
+							Long id_utente = (long)chiediIntero(1, 100);
 							
 							Utente u3 = TD.findUtente(id_utente);
 							TD.eliminaEntita(u3);
@@ -136,7 +136,7 @@ public class Runnable {
 									+ "4 - Stampa biglietti emessi in un determinato periodo di tempo \n"
 									+ "5 - Stampa tutti i biglietti \n");
 							
-							int pickOperazioneBiglietto = chiediIntero(1, 8);
+							int pickOperazioneBiglietto = chiediIntero(1, 5);
 							switch (pickOperazioneBiglietto) {
 								case 1 -> {
 									System.out.println("Tramite quale rivenditore vorresti acquistare il biglietto?");									
@@ -145,7 +145,7 @@ public class Runnable {
 										System.out.println(r);
 									}									
 									System.out.println("\nIndica il rivenditore attraverso il corrispettivo ID");
-									int daUtilizzare = chiediIntero(1, listRivenditori.size());
+									int daUtilizzare = chiediIntero(1, 100);
 									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);									
 									System.out.println("Per quale utente vuoi acquistare il biglietto? \n");									
 									List<Utente> listUtenti = TD.trovaTuttiUtenti();
@@ -153,7 +153,7 @@ public class Runnable {
 										System.out.println(u);
 									}
 									System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
-									Long id_utente = (long)chiediIntero(1, listUtenti.size());
+									Long id_utente = (long)chiediIntero(1, 100);
 									Utente u = TD.findUtente(id_utente);
 									
 									Biglietto b = new Biglietto();
@@ -167,7 +167,7 @@ public class Runnable {
 										System.out.println(b);
 									}									
 									System.out.println("\nIndica il biglietto attraverso il corrispettivo ID");
-									Long id_biglietto = (long)chiediIntero(1, listBiglietti.size());									
+									Long id_biglietto = (long)chiediIntero(1, 100);									
 									Biglietto b = TD.findBiglietto(id_biglietto);
 									TD.eliminaEntita(b);
 								}								
@@ -178,7 +178,7 @@ public class Runnable {
 										System.out.println(u);
 									}									
 									System.out.println("\nIndica l'utente attraverso il corrispettivo ID");
-									Long id_utente = (long)chiediIntero(1, listUtenti.size());									
+									Long id_utente = (long)chiediIntero(1, 100);									
 									Utente u = TD.findUtente(id_utente);									
 									System.out.println("Ecco la lista di biglietti dell'utente: \n");
 									List<Biglietto> bigliettiUtente = TD.trovaBigliettiUtente2(u);									
@@ -233,7 +233,7 @@ public class Runnable {
 									}
 									
 									System.out.println("\nIndica il rivenditore attraverso il corrispettivo ID");
-									int daUtilizzare = chiediIntero(1, listRivenditori.size());
+									int daUtilizzare = chiediIntero(1, 100);
 									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);
 									
 									System.out.println("Per quale tessera vuoi sottoscrivere l'abbonamento? \n");
@@ -244,7 +244,7 @@ public class Runnable {
 									}
 									System.out.println("\nIndica la tessera attraverso il corrispettivo ID");
 									
-									Long id_tessera = (long)chiediIntero(1, listTessere.size());
+									Long id_tessera = (long)chiediIntero(1, 100);
 									Tessera t = TD.findTessera(id_tessera);
 									
 									System.out.println("Che tipo di abbonamento vuoi sottoscrivere? \n"
@@ -272,7 +272,7 @@ public class Runnable {
 									}
 									
 									System.out.println("\nIndica il biglietto attraverso il corrispettivo ID");
-									Long id_Abbonamento = (long)chiediIntero(1, listAbbonamenti.size());
+									Long id_Abbonamento = (long)chiediIntero(1, 100);
 									
 									Abbonamento a = TD.findAbbonamento(id_Abbonamento);
 									TD.eliminaEntita(a);
@@ -305,14 +305,6 @@ public class Runnable {
 		                                System.out.println(t);
 		                        }
 							}
-						}
-						case 2 ->{}
-						case 3 ->{}
-						case 4 ->{
-							System.out.println("Ecco tutti i titoli di viaggio");
-							List <Titolo_di_Viaggio> listaTitoliDiViaggio = TD.trovaTuttiITitoliDiViaggio();
-							for (Titolo_di_Viaggio t :listaTitoliDiViaggio)
-								System.out.println(t);
 						}
 					}				
 				}
@@ -572,6 +564,7 @@ public class Runnable {
 			                }
 							Long id = sc.nextLong();
 							Veicolo v  = TD.findVeicolo(id);
+							@SuppressWarnings("unused")
 							List <Manutenzione>manutenzioniVeicolo = v.getManutenzioni();
 							System.out.println("Inserisci la data col seguente format YYYY MM DD");
 						
