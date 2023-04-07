@@ -164,11 +164,6 @@ public class Veicolo {
 		return tappa_assegnata;
 	}
 
-	/*
-	public void setBigliettiVidimati(Biglietto bigliettoVidimato) {
-		this.bigliettiVidimati.add(bigliettoVidimato);
-	}
-	*/
 	public Long getId_veicolo() {
 		return id_veicolo;
 	}

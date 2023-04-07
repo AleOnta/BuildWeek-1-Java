@@ -323,8 +323,9 @@ public class Runnable {
 						+ "1 - Crea un mezzo \n"
 						+ "2 - Aggiona un mezzo \n"
 						+ "3 - Elimina un mezzo \n"
-						+ "4 - Mostra tutti i mezzi");
-						int pickGestioneMezzi = chiediIntero(1, 4);
+						+ "4 - Mostra tutti i mezzi\n"
+						+ "5 - Fai partire tratta \n");
+						int pickGestioneMezzi = chiediIntero(1, 5);
 						switch(pickGestioneMezzi) {
 						// 								CREAZIONE MEZZO
 						case 1->{
@@ -448,7 +449,33 @@ public class Runnable {
 							for (Veicolo v : tuttiIVeicoli) {
 								System.out.println(v);
 							}
-						}													
+						}		
+						
+						case 5 -> {
+							
+							System.out.println("Ecco la lista di tutte le tratte:");
+							List<Tratta> listTratte = TD.trovaTutteLeTratte();
+		                    for (Tratta tr1 : listTratte) {
+		                        System.out.println(tr1);
+		                    }
+		                    
+		                    System.out.println("Ecco la lista di tutti  i veicoli \n");
+							List <Veicolo> tuttiIVeicoli = TD.trovaTuttiIVeicoli();
+							for (Veicolo v : tuttiIVeicoli) {
+								System.out.println(v);
+							}
+		                    
+		                    System.out.println("Seleziona il veicolo che vuoi far partire indicandone l'ID");
+		                    
+		                    int pickVeicolo = chiediIntero(1, 50);
+		                    tuttiIVeicoli.get(pickVeicolo - 1).startViaggio();
+		                    
+		                    List<Viaggio> listViaggi = TD.trovaTuttiIViaggi();
+		                    System.out.println("ecco il report dei viaggi");
+		                    for (Viaggio v : listViaggi) {
+								System.out.println(v);
+							}
+						}
 						} //  													FINE GESTIONE MEZZI
 						  
 					}
@@ -656,5 +683,4 @@ public class Runnable {
 		int day = Integer.parseInt(dataInArray[2]);
 		return LocalDate.of(year, month, day);
 	}
-	
 }

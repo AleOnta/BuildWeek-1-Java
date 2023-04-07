@@ -901,6 +901,11 @@ public class TransportDAO implements I_metodi{
         return q.getResultList();
     }
 		
-		
+    @SuppressWarnings("unchecked")
+    public List<Viaggio> trovaTuttiIViaggi() {
+        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+        Query q = em.createNamedQuery("Viaggi.TuttiIViaggi");
+        return q.getResultList();
+    }
 
 }

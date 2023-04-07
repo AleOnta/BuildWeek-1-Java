@@ -62,7 +62,7 @@ public class Tratta {
 
 	@Override
 	public String toString() {
-		return "Tratta [id = " + id + ", idVeicolo = " + veicolo.getId_veicolo() + ", partenza = " + punto_partenza + ", capolinea = " + capolinea
+		return "Tratta [id = " + id  + ", partenza = " + punto_partenza + ", capolinea = " + capolinea
 				+ ", avg_percorrenza=" + media_percorrenza + "]";
 	}
 

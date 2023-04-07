@@ -7,7 +7,7 @@ import javax.persistence.*;
 import model_parco_mezzi.Veicolo;
 
 @Entity
-
+@NamedQuery(name= "Viaggi.TuttiIViaggi", query = "SELECT v FROM Viaggio v")
 public class Viaggio {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
