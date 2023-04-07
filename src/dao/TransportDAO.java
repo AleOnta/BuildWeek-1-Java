@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import model.Abbonamento;
 import model.Biglietto;
 import model.Convalida;
+import model.E_Abbonamento;
 import model.Tessera;
 import model.Titolo_di_Viaggio;
 import model.Utente;
@@ -801,7 +802,7 @@ public class TransportDAO implements I_metodi{
 
 	
 	@SuppressWarnings("unchecked")
-	public List<Tessera> trovaTutteTessere(int id) {
+	public List<Tessera> trovaTutteTessereUtente(int id) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("utenti.findTessereUtente");
 		q.setParameter("id", (long)id);
@@ -818,15 +819,13 @@ public class TransportDAO implements I_metodi{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Biglietto> findBigliettiEmessiInData(LocalDate dataUno, LocalDate dataDue) {
+	public List<Titolo_di_Viaggio> findBigliettiEmessiInData(LocalDate dataUno, LocalDate dataDue) {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("Biglietto.emessiInData");
 		q.setParameter("data1", dataUno);
 		q.setParameter("data2", dataDue);
 		return q.getResultList();
 	}
-
-	// METODI PER LA GESTIONE DEL PARCO MEZZI
 		
 	@SuppressWarnings("unchecked")
 	public List<Convalida> findConvalidatiInData(LocalDate dataUno, LocalDate dataDue) {
@@ -845,12 +844,20 @@ public class TransportDAO implements I_metodi{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Tessera> trovaTutteTessere() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Tessera.findAll");
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Utente> trovaTuttiUtenti() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("utenti.getAll");
 		return q.getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<VenditaBiglietto> trovaTuttiRivenditori() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("rivenditori.findAll");
@@ -863,14 +870,35 @@ public class TransportDAO implements I_metodi{
 		Query q = em.createNamedQuery("Tratte.CercaTutteLeTratte");
 		return q.getResultList();
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Tratta> trovaTutteLeManutenzioni() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("Manutenzioni.CercaTutteLeManutenzioni");
 		return q.getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Abbonamento> trovaTuttiAbbonamenti() {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Abbonamenti.findAll");
+		return q.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Abbonamento> trovaAbbonamentiPerTipo(E_Abbonamento tipo) {
+		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		Query q = em.createNamedQuery("Abbonamenti.findTipo");
+		q.setParameter("enum", tipo);
+		return q.getResultList();
+	}
 		
-
+	@SuppressWarnings("unchecked")
+    public List<Titolo_di_Viaggio> trovaTuttiITitoliDiViaggio() {
+        EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
+        Query q = em.createNamedQuery("Titoli.tuttiITitoliDiViaggio");
+        return q.getResultList();
+    }
 		
 		
 

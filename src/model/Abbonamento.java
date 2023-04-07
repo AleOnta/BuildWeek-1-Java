@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
+@NamedQuery(name = "Abbonamenti.findAll", query = "SELECT a FROM Abbonamento a")
+@NamedQuery(name = "Abbonamenti.findTipo", query = "SELECT a FROM Abbonamento a WHERE a.tipologia = :enum")
 public class Abbonamento extends Titolo_di_Viaggio {
 	
 	@ManyToOne(cascade = CascadeType.REFRESH)
@@ -85,9 +87,9 @@ public class Abbonamento extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Abbonamento [Id =v " + getId() + ", idTessera =" + tessera_proprietario.getNumeroTessera() + ", idUser=" 
+		return "Abbonamento [Id = " + getId() + ", idTessera =" + tessera_proprietario.getNumeroTessera() + ", idUser=" 
 				+ getTessera_proprietario().getUtenteProprietario().getId() + ", tipologia = " + tipologia + ", scadenza="
-				+ scadenza + ", getEmittente()=" + getEmittente()
-				+ ", getDataEmissione()=" + getDataEmissione() + "]";
+				+ scadenza + ", Emittente =" + getEmittente()
+				+ ", DataEmissione = " + getDataEmissione() + "]";
 	}
 }

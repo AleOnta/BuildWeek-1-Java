@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "tessere")
+@NamedQuery(name = "Tessera.findAll", query = "SELECT t FROM Tessera t")
 public class Tessera {
 	
 	@Id
@@ -64,7 +65,7 @@ public class Tessera {
 	@Override
 	public String toString() {
 		return "Tessera [idTessera = " + numero_tessera + ", idUtente = " + utente_proprietario.getId() + ", iscrizione = " + iscrizione + ", scadenza = " + scadenza
-				+ ", abbonamento = \n" + getAbbonamenti() + "]";
+				+ "]";
 	}
 
 	

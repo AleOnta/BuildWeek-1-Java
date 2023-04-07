@@ -20,7 +20,7 @@ public class Runnable {
 		boolean isRunning = true;
 		int pick = 8;
 		while (isRunning) {
-			System.out.println("Benvenuto nel gestionale, cosa vuoi fare? \n \n" 
+			System.out.println("\nBenvenuto nel gestionale, cosa vuoi fare? \n \n" 
 					+ "1 - Gestione della sezione Utenti \n"
 					+ "2 - Gestione dei Titoli di Viaggio \n"
 					+ "3 - Gestione del Parco mezzi \n \n"
@@ -31,6 +31,7 @@ public class Runnable {
 			switch (pick) {
 				case 0 -> {
 					System.out.println("Chiusura del gestionale");
+					isRunning = false;
 					break;
 				}
 				// GESTIONE UTENTI
@@ -133,8 +134,7 @@ public class Runnable {
 									+ "2 - Elimina un biglietto \n"
 									+ "3 - Stampa biglietti di un utente \n"
 									+ "4 - Stampa biglietti emessi in un determinato periodo di tempo \n"
-									+ "5 - Stampa tutti i biglietti \n"
-									+ "6 - Stampa solo i biglietti validi \n");
+									+ "5 - Stampa tutti i biglietti \n");
 							
 							int pickOperazioneBiglietto = chiediIntero(1, 8);
 							switch (pickOperazioneBiglietto) {
@@ -209,17 +209,116 @@ public class Runnable {
 									LocalDate dataUno = chiediData("inizio ricerca");
 									LocalDate dataDue = chiediData("fine ricerca");
 									
-									List<Biglietto> listBiglietti = TD.findBigliettiEmessiInData(dataUno, dataDue);
+									List<Titolo_di_Viaggio> listBiglietti = TD.findBigliettiEmessiInData(dataUno, dataDue);
 									
-									for (Biglietto b : listBiglietti) {
-										System.out.println(b);
+									for (Titolo_di_Viaggio t : listBiglietti) {
+										if (t instanceof Biglietto) {
+												System.out.println(t);
+										}
 									}
 								}
 								
 								case 5 -> {
+									List<Biglietto> tuttiBiglietti = TD.trovaTuttiBiglietti();
+									for (Biglietto b : tuttiBiglietti) {
+										System.out.println(b);
+									}
+								}
+								
+							}
+						}
+						
+						case 2 -> {
+							System.out.println("Benvenuto nella sezione 'abbonamenti', cosa vuoi fare? \n"
+									+ "1 - Sottoscrivi abbonamento \n"
+									+ "2 - Elimina un abbonamento \n"
+									+ "3 - Trova abbonamenti per tipologia \n"
+									+ "4 - Stampa tutti gli abbonamenti \n");
+							
+							int pickOperazioneAbbonamento = chiediIntero(1, 5);
+							switch (pickOperazioneAbbonamento) {
+								case 1 -> {
+									System.out.println("Tramite quale rivenditore vorresti acquistare il biglietto?");
+									
+									List<VenditaBiglietto> listRivenditori = TD.trovaTuttiRivenditori();
+									for (VenditaBiglietto r : listRivenditori) {
+										if (r instanceof RivenditoreFisico) {
+											System.out.println(r);
+										}	
+									}
+									
+									System.out.println("\nIndica il rivenditore attraverso il corrispettivo ID");
+									int daUtilizzare = chiediIntero(1, listRivenditori.size());
+									VenditaBiglietto r = TD.findEmittente((long)daUtilizzare);
+									
+									System.out.println("Per quale tessera vuoi sottoscrivere l'abbonamento? \n");
+									
+									List<Tessera> listTessere = TD.trovaTutteTessere();
+									for (Tessera t : listTessere) {
+										System.out.println(t);
+									}
+									System.out.println("\nIndica la tessera attraverso il corrispettivo ID");
+									
+									Long id_tessera = (long)chiediIntero(1, listTessere.size());
+									Tessera t = TD.findTessera(id_tessera);
+									
+									System.out.println("Che tipo di abbonamento vuoi sottoscrivere? \n"
+											+ "1 - Settimanale \n"
+											+ "2 - Mensile \n");
+									
+									int pickTipo = chiediIntero(1, 2); 
+									if (pickTipo == 1) {
+										Abbonamento a = new Abbonamento(E_Abbonamento.SETTIMANALE);
+										a.setEmittente(r);
+										TD.salvaEntita(a, t);
+									} else {
+										Abbonamento a = new Abbonamento(E_Abbonamento.MENSILE);
+										a.setEmittente(r);
+										TD.salvaEntita(a, t);
+									}
+								}
+								
+								case 2 -> {
+									System.out.println("Quale abbonamento vorresti eliminare?");
+									
+									List<Abbonamento> listAbbonamenti = TD.trovaTuttiAbbonamenti();
+									for (Abbonamento a : listAbbonamenti) {
+										System.out.println(a);
+									}
+									
+									System.out.println("\nIndica il biglietto attraverso il corrispettivo ID");
+									Long id_Abbonamento = (long)chiediIntero(1, listAbbonamenti.size());
+									
+									Abbonamento a = TD.findAbbonamento(id_Abbonamento);
+									TD.eliminaEntita(a);
+								}
+								
+								case 3 -> {
+									System.out.println("Che tipo di abbobnamento vuoi ricercare? \n"
+											+ "1 - Settimanale \n"
+											+ "2 - Mensile \n");
+									
+									int pickTipo = chiediIntero(1, 2); 
+									if (pickTipo == 1) {
+										List<Abbonamento> listAbbonamento = TD.trovaAbbonamentiPerTipo(E_Abbonamento.SETTIMANALE);
+										for (Abbonamento a : listAbbonamento) {
+											System.out.println(a);
+										}
+									} else {
+										List<Abbonamento> listAbbonamento = TD.trovaAbbonamentiPerTipo(E_Abbonamento.MENSILE);
+										for (Abbonamento a : listAbbonamento) {
+											System.out.println(a);
+										}
+									}
 									
 								}
 								
+								case 4 ->{
+		                            System.out.println("Ecco tutti i titoli di viaggio");
+		                            List <Titolo_di_Viaggio> listaTitoliDiViaggio = TD.trovaTuttiITitoliDiViaggio();
+		                            for (Titolo_di_Viaggio t :listaTitoliDiViaggio)
+		                                System.out.println(t);
+		                        }
 							}
 						}
 					}
