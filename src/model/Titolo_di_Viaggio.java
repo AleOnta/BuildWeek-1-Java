@@ -51,11 +51,4 @@ public class Titolo_di_Viaggio {
 		return id;
 	}
 
-	@Override
-	public String toString() {
-		return "id=" + id + ", emittente=" + emittente + ", dataEmissione=" + dataEmissione;
-	}
-	
-	
-	
 }

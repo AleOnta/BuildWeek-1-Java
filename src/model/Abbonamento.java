@@ -85,11 +85,9 @@ public class Abbonamento extends Titolo_di_Viaggio {
 
 	@Override
 	public String toString() {
-		return "Abbonamento [" + super.toString() + ", tesseraId=" + tessera_proprietario + ", tipologia=" + tipologia + ", scadenza=" + scadenza
-				+"]";
+		return "Abbonamento [Id =v " + getId() + ", idTessera =" + tessera_proprietario.getNumeroTessera() + ", idUser=" 
+				+ getTessera_proprietario().getUtenteProprietario().getId() + ", tipologia = " + tipologia + ", scadenza="
+				+ scadenza + ", getEmittente()=" + getEmittente()
+				+ ", getDataEmissione()=" + getDataEmissione() + "]";
 	}
-	
-	
-	
-	
 }

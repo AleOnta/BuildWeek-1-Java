@@ -23,22 +23,13 @@ public class Viaggio {
 		super();
 	}
 
-
-	@Override
-	public String toString() {
-		return "Viaggio [id=" + id + ", mezzo=" + mezzo + ", tempo_percorrenza=" + tempo_percorrenza + "]";
-	}
-
-
 	public Veicolo getMezzo() {
 		return mezzo;
 	}
 
-
 	public void setMezzo(Veicolo mezzo) {
 		this.mezzo = mezzo;
 	}
-
 
 	public LocalTime getTempo_percorrenza() {
 		return tempo_percorrenza;
@@ -49,10 +40,15 @@ public class Viaggio {
 		this.tempo_percorrenza=LocalTime.of(1, random);
 	}
 
-
 	public Long getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return "Viaggio [id = " + id + ", idVeicolo = " + mezzo.getId_veicolo() + ", tempo_percorrenza = " + tempo_percorrenza + "]";
+	}
 	
 
+	
 }

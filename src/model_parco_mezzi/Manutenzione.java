@@ -58,6 +58,4 @@ public class Manutenzione {
 		return "Manutenzione [id=" + id + ", id_veicolo=" + id_veicolo + ", inizio=" + inizio + ", fine=" + fine + "]";
 	}
 	
-	
-	
 }

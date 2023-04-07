@@ -20,9 +20,9 @@ public class DistributoreAutomatico extends VenditaBiglietto{
 
 	@Override
 	public String toString() {
-		return "DistributoreAutomatico = " + attivo + ", Id Rivenditore = " + getId_rivenditore();
+		return "DistributoreAutomatico [Id = " + getId_rivenditore() + ", attivo = " + attivo + ", Luogo = "
+				+ getLuogo() + "]";
 	}
-
 
 
 }

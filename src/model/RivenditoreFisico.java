@@ -33,12 +33,6 @@ private Time orarioChiusura;
 		this.orarioChiusura = time;
 	}
 	
-	@Override
-	public String toString() {
-		return "RivenditoreFisico [orarioApertura=" + orarioApertura + ", orarioChiusura=" + orarioChiusura
-				+ ", id_rivenditore=" + super.getId_rivenditore() + "]";
-	}
-
 	public Abbonamento vendiAbbonamento(Utente cliente, E_Abbonamento tipo) {
 		Abbonamento newAbb = null;
 		if (cliente.getTessereUtente().size() < 1) {
@@ -76,5 +70,13 @@ private Time orarioChiusura;
 			newAbb.setEmittente(this);
 		}
 		return newAbb;
+	}
+
+	@Override
+	public String toString() {
+		return "RivenditoreFisico [Id = " + getId_rivenditore() + ", Luogo = " + getLuogo()  
+				+ ", orarioApertura = " + orarioApertura + ", orarioChiusura = " + orarioChiusura + "]";
 	}	
+	
+	
 }

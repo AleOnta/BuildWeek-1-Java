@@ -53,15 +53,20 @@ public class Tessera {
 		return numero_tessera;
 	}
 	
-	public List<Abbonamento> getAbbonamenti() {
-		System.out.print(abbonamenti + " - ");
-		return abbonamenti;
+	public String getAbbonamenti() {
+		if (abbonamenti.size() < 1) {
+			return "Non ci sono abbonamenti legati a questa tessera.";
+		} else {
+			return abbonamenti.get(0).toString();
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "TESSERA --> numero-tessera=" + numero_tessera + ", utente-proprietario=" + utente_proprietario + ", scadenza="
-				+ scadenza;
+		return "Tessera [idTessera = " + numero_tessera + ", idUtente = " + utente_proprietario.getId() + ", iscrizione = " + iscrizione + ", scadenza = " + scadenza
+				+ ", abbonamento = \n" + getAbbonamenti() + "]";
 	}
+
+	
 	
 }

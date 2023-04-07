@@ -45,6 +45,7 @@ public class Veicolo {
 	
 	@OneToMany(mappedBy="mezzo",cascade=CascadeType.ALL)
 	private List<Viaggio> lista_viaggi = new ArrayList<Viaggio>();
+	
 	@Column(nullable = false)
 	private int counter;
 	
@@ -123,11 +124,47 @@ public class Veicolo {
 		this.tappa_assegnata = tappa_assegnata;
 	}
 
-	/*
-	public List<Biglietto> getBigliettiVidimati() {
+	public List<Convalida> getBigliettiVidimati() {
 		return bigliettiVidimati;
 	}
 
+	public void printBigliettiVidimati() {
+		if (bigliettiVidimati.size() > 0) {
+			for (Convalida c : bigliettiVidimati) {
+				System.out.println(c);
+			}
+		}
+	}
+	
+	public void printManutenzioni() {
+		if(manutenzioni.size() > 0) {
+			for (Manutenzione m : manutenzioni) {
+				System.out.println(m);
+			}
+		}
+	}
+	
+	public List<Manutenzione> getManutenzioni() {
+		return manutenzioni;
+	}
+
+	public void setManutenzioni(List<Manutenzione> manutenzioni) {
+		this.manutenzioni = manutenzioni;
+	}
+
+	public List<Viaggio> getLista_viaggi() {
+		return lista_viaggi;
+	}
+
+	public void setLista_viaggi(List<Viaggio> lista_viaggi) {
+		this.lista_viaggi = lista_viaggi;
+	}
+
+	public Tratta getTappa_assegnata() {
+		return tappa_assegnata;
+	}
+
+	/*
 	public void setBigliettiVidimati(Biglietto bigliettoVidimato) {
 		this.bigliettiVidimati.add(bigliettoVidimato);
 	}
@@ -138,8 +175,9 @@ public class Veicolo {
 
 	@Override
 	public String toString() {
-		return "Veicolo [id_veicolo=" + id_veicolo + ", tipologia=" + tipologia + ", capienza=" + capienza + ", status="
-				+ status  + "]";
+		return "Veicolo [id = " + id_veicolo + ", tipologia = " + tipologia + ", status = " + status + ", capienza = "
+				+ capienza + ", convalide = " + bigliettiVidimati.size() + ", manutenzioni = " + manutenzioni.size()
+				+ ", tappa_assegnata = " + tappa_assegnata + ", lista_viaggi = " + lista_viaggi.size() + ", counter = " + counter
+				+ "]";
 	}
-
 }
