@@ -177,11 +177,12 @@ public class TransportDAO implements I_metodi{
 		}
 	}
 		
-	public void salvaEntita(Tratta tr, Veicolo v) {
-		v.setTappa_assegnata(tr);
+	public void salvaEntita(Tratta tr, Veicolo v) {		
+		
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		try {
 			em.getTransaction().begin();
+			v.setTappa_assegnata(tr);
 			em.merge(v);
 			em.persist(tr);
 			em.getTransaction().commit();
@@ -872,7 +873,7 @@ public class TransportDAO implements I_metodi{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tratta> trovaTutteLeManutenzioni() {
+	public List<Manutenzione> trovaTutteLeManutenzioni() {
 		EntityManager em = JpaUtil.getEntityManagerFactory().createEntityManager();
 		Query q = em.createNamedQuery("Manutenzioni.CercaTutteLeManutenzioni");
 		return q.getResultList();
